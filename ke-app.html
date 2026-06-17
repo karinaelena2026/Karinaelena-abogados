@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Karina Elena Abogados</title>
+<meta name="description" content="Sistema de gestión del estudio jurídico Karina Elena Abogados · Río Cuarto, Córdoba">
+<meta name="theme-color" content="#0D0D0D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KE Abogados">
+<link rel="manifest" href="manifest.json">
+<!-- Apple touch icons -->
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D0D0D;--bg2:#141414;--card:#1C1C1C;--card2:#242424;
+  --border:#2A2A2A;--gold:#C9A96E;--gold2:#A8843A;
+  --text:#E8E0D0;--text2:#9A9080;--text3:#6A6058;
+  --danger:#C0392B;--success:#27AE60;--warning:#E67E22;
+}
+body.light{
+  --bg:#F0EBE0;--bg2:#E8E3D8;--card:#FFF;--card2:#F8F5EF;
+  --border:#D8D0C0;--gold:#8B6914;--gold2:#6B4F10;
+  --text:#1A1510;--text2:#5A5040;--text3:#9A9080;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}
+.app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative}
+
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 22px}
+.seal{width:76px;height:76px;border-radius:50%;background:radial-gradient(circle,#2a2a2a,#0a0a0a);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:-2px;margin-bottom:12px}
+body.light .seal{background:radial-gradient(circle,#e8e0d0,#c0b8a8)}
+.brand{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;letter-spacing:2px;color:var(--text);text-align:center}
+.brand-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;text-align:center}
+.login-hint{font-size:11px;color:var(--text2);margin-bottom:12px}
+.user-list{width:100%;display:flex;flex-direction:column;gap:8px}
+.user-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s;width:100%;text-align:left}
+.user-row:hover{border-color:var(--gold)}
+.uav{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:15px;font-weight:700;flex-shrink:0}
+.uname{font-size:14px;font-weight:600;color:var(--text)}
+.urole{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.role-a{color:var(--gold)}
+.role-e{color:var(--text3)}
+
+/* PASSWORD STEP */
+#pwStep{display:none;width:100%;margin-top:8px}
+.back-row{display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:16px}
+.back-row span{font-size:12px;color:var(--text2)}
+.sel-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.pw-label{font-size:10px;color:var(--text2);letter-spacing:.5px;margin-bottom:6px}
+.pw-field{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.pw-field input{background:none;border:none;outline:none;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;flex:1;width:100%}
+.pw-hint{font-size:10px;color:var(--text3);margin-bottom:14px}
+.pw-error{font-size:11px;color:#E74C3C;margin-bottom:10px;display:none}
+.btn-gold{width:100%;background:linear-gradient(135deg,#A8843A,#C9A96E);border:none;border-radius:10px;padding:13px;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:#0D0D0D;cursor:pointer}
+
+/* APP */
+#appShell{display:none;flex-direction:column;flex:1}
+
+/* HEADER */
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 15px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.hdr-left{display:flex;align-items:center;gap:9px}
+.hdr-seal{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,#2a2a2a,#0a0a0a);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0}
+body.light .hdr-seal{background:radial-gradient(circle,#e8e0d0,#c0b8a8)}
+.hdr-brand{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--text);letter-spacing:1px;line-height:1.1}
+.hdr-sub{font-size:7px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.hdr-right{display:flex;gap:6px;align-items:center}
+.ico-btn{width:32px;height:32px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:var(--text2);transition:all .2s}
+.ico-btn:hover{border-color:var(--gold)}
+.pill{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 9px 4px 4px;cursor:pointer;transition:border-color .2s}
+.pill:hover{border-color:var(--gold)}
+.pill-av{width:22px;height:22px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif}
+.pill-name{font-size:10px;color:var(--text2)}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding-bottom:80px}
+.screen{display:none;padding:16px}
+.screen.active{display:block}
+.eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.stitle{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:var(--text);margin-bottom:14px}
+.divtxt{display:flex;align-items:center;gap:8px;margin:14px 0}
+.divtxt span{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);white-space:nowrap}
+.divtxt::before,.divtxt::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* DASHBOARD */
+.greet-time{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.greet-name{font-family:'Playfair Display',serif;font-size:21px;color:var(--text);margin-top:2px;margin-bottom:14px}
+.greet-name b{color:var(--gold);font-weight:600}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px;cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s}
+.stat:hover{border-color:var(--gold)}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:0;transition:opacity .2s}
+.stat:hover::before{opacity:1}
+.stat-icon{font-size:17px;margin-bottom:7px}
+.stat-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text);line-height:1}
+.stat-lbl{font-size:10px;color:var(--text2);margin-top:3px}
+.stat-d{font-size:9px;margin-top:4px}
+.cup{color:var(--success)}.cwarn{color:var(--warning)}.cdanger{color:var(--danger)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 13px;margin-bottom:8px}
+.alert-card{border-left:3px solid var(--gold)}
+.alert-card.danger{border-left-color:var(--danger)}
+.alert-card.warn{border-left-color:var(--warning)}
+.card-row{display:flex;align-items:flex-start;gap:9px}
+.adot{width:7px;height:7px;border-radius:50%;background:var(--gold);margin-top:4px;flex-shrink:0}
+.danger .adot{background:var(--danger)}.warn .adot{background:var(--warning)}
+.card-body{flex:1}
+.card-title{font-size:12px;font-weight:500;color:var(--text)}
+.card-sub{font-size:10px;color:var(--text2);margin-top:2px}
+.card-time{font-size:9px;color:var(--text3);white-space:nowrap}
+
+/* EVENTS */
+.event-card{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.event-card .card{flex:1;margin-bottom:0}
+.edate{text-align:center;min-width:36px;background:var(--card2);border-radius:7px;padding:5px 3px;margin-bottom:8px}
+.eday{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gold);line-height:1}
+.emon{font-size:7px;text-transform:uppercase;letter-spacing:1px;color:var(--text2)}
+.ev-row{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:10px 12px;margin-bottom:7px}
+.ev-info{flex:1}
+.ev-title{font-size:12px;font-weight:500;color:var(--text)}
+.ev-meta{font-size:10px;color:var(--text2);margin-top:2px}
+.badge{font-size:8px;padding:2px 6px;border-radius:20px;font-weight:500;flex-shrink:0}
+.badge-gold{background:rgba(201,169,110,.15);color:var(--gold);border:1px solid rgba(201,169,110,.3)}
+.badge-blue{background:rgba(52,152,219,.15);color:#5DADE2;border:1px solid rgba(52,152,219,.3)}
+.badge-green{background:rgba(39,174,96,.15);color:#58D68D;border:1px solid rgba(39,174,96,.3)}
+.badge-purple{background:rgba(155,89,182,.15);color:#BB8FCE;border:1px solid rgba(155,89,182,.3)}
+
+/* CLIENTES */
+.search-bar{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;flex:1}
+.search-bar input::placeholder{color:var(--text3)}
+.client-row{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:7px;cursor:pointer;transition:all .2s}
+.client-row:hover{border-color:var(--gold);transform:translateX(2px)}
+.cav{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold2),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#0D0D0D;flex-shrink:0}
+.cinfo{flex:1}
+.cname{font-size:13px;font-weight:500;color:var(--text)}
+.cexp{font-size:10px;color:var(--text2);margin-top:2px}
+.wa-btn{display:inline-flex;align-items:center;gap:4px;background:#25D366;border:none;border-radius:7px;padding:4px 9px;font-size:9px;font-weight:600;color:#fff;cursor:pointer;transition:opacity .2s}
+.wa-btn:hover{opacity:.85}
+
+/* EXPEDIENTES */
+.filter-bar{display:flex;gap:5px;margin-bottom:11px;overflow-x:auto;padding-bottom:3px}
+.filter-bar::-webkit-scrollbar{height:2px}
+.fpill{font-size:9px;padding:5px 10px;border-radius:20px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text2);transition:all .2s;white-space:nowrap;flex-shrink:0}
+.fpill.on{background:var(--gold);border-color:var(--gold);color:#0D0D0D;font-weight:600}
+.exp-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:8px}
+.exp-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.exp-car{font-family:'Playfair Display',serif;font-size:12px;font-weight:600;color:var(--text);flex:1;padding-right:7px}
+.exp-st{font-size:8px;padding:2px 7px;border-radius:20px;font-weight:600;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.st-a{background:rgba(39,174,96,.15);color:#58D68D;border:1px solid rgba(39,174,96,.3)}
+.st-t{background:rgba(201,169,110,.15);color:var(--gold);border:1px solid rgba(201,169,110,.3)}
+.st-c{background:rgba(160,160,160,.15);color:var(--text3);border:1px solid rgba(160,160,160,.2)}
+.exp-meta{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.em{font-size:10px;color:var(--text2)}
+.em strong{color:var(--text3);font-weight:400;display:block;font-size:7px;letter-spacing:1px;text-transform:uppercase;margin-bottom:1px}
+
+/* HONORARIOS */
+.hon-sum{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:15px;margin-bottom:12px}
+.hon-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.hon-total{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);margin:3px 0}
+.hon-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.hon-item{text-align:center}
+.hon-val{font-family:'Playfair Display',serif;font-size:14px;font-weight:600}
+.hon-lbl2{font-size:7px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-top:2px}
+.hon-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:7px}
+.hon-top{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.hon-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hon-info{flex:1}
+.hon-client{font-size:12px;font-weight:500;color:var(--text)}
+.hon-concept{font-size:10px;color:var(--text2);margin-top:1px}
+.hon-right{text-align:right}
+.hon-amount{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--text)}
+.hon-venc{font-size:9px;margin-top:1px}
+.hon-btns{display:flex;gap:6px}
+
+/* TAREAS */
+.task-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 13px;margin-bottom:8px}
+.task-top{display:flex;align-items:flex-start;gap:9px;margin-bottom:8px}
+.chk{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px;font-size:10px}
+.chk:hover{border-color:var(--gold)}
+.chk.done{background:var(--success);border-color:var(--success);color:#fff}
+.task-body{flex:1}
+.task-title{font-size:12px;font-weight:500;color:var(--text);line-height:1.3}
+.task-title.crossed{text-decoration:line-through;color:var(--text3)}
+.task-desc{font-size:10px;color:var(--text2);margin-top:3px;line-height:1.4}
+.prio{font-size:8px;padding:2px 7px;border-radius:20px;font-weight:600;flex-shrink:0}
+.p-alta{background:rgba(192,57,43,.15);color:#E74C3C}
+.p-media{background:rgba(230,126,34,.15);color:#E67E22}
+.p-baja{background:rgba(39,174,96,.15);color:#27AE60}
+.task-bot{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.chip{display:flex;align-items:center;gap:5px;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:3px 8px 3px 3px}
+.chip-av{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;font-family:'Playfair Display',serif}
+.chip-name{font-size:10px;color:var(--text2)}
+.tdate{font-size:9px;color:var(--text3)}
+.tstatus{display:inline-flex;align-items:center;gap:3px;font-size:8px;padding:3px 7px;border-radius:20px;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid}
+.ts-sinver{background:rgba(160,160,160,.1);color:var(--text3);border-color:rgba(160,160,160,.2)}
+.ts-proceso{background:rgba(230,126,34,.1);color:#E67E22;border-color:rgba(230,126,34,.3)}
+.ts-final{background:rgba(39,174,96,.1);color:#58D68D;border-color:rgba(39,174,96,.3)}
+.file-zone{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.fchip{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:500;cursor:pointer;border:1px solid}
+.fc-pdf{background:rgba(192,57,43,.1);color:#E74C3C;border-color:rgba(192,57,43,.3)}
+.fc-word{background:rgba(52,152,219,.1);color:#5DADE2;border-color:rgba(52,152,219,.3)}
+.fc-excel{background:rgba(39,174,96,.1);color:#58D68D;border-color:rgba(39,174,96,.3)}
+.fc-img{background:rgba(155,89,182,.1);color:#BB8FCE;border-color:rgba(155,89,182,.3)}
+.upload-lbl{display:inline-flex;align-items:center;gap:4px;background:none;border:1px dashed var(--border);border-radius:6px;padding:3px 9px;font-size:9px;color:var(--text3);cursor:pointer;transition:all .2s}
+.upload-lbl:hover{border-color:var(--gold);color:var(--gold)}
+
+/* NUEVA TAREA MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.overlay.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:20px 17px 34px;width:100%;max-width:430px;animation:up .3s ease}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mhandle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 15px}
+.mtitle{font-family:'Playfair Display',serif;font-size:16px;color:var(--text);margin-bottom:12px}
+.flabel{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:5px;margin-top:12px;display:block}
+.finput{width:100%;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:10px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border .2s}
+.finput:focus{border-color:var(--gold)}
+textarea.finput{resize:none;height:70px;line-height:1.5}
+.arow{display:flex;gap:7px;flex-wrap:wrap}
+.aopt{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 11px;cursor:pointer;transition:all .2s;font-size:11px;color:var(--text2)}
+.aopt.on{border-color:var(--gold);background:rgba(201,169,110,.12);color:var(--gold)}
+.prow{display:flex;gap:7px}
+.popt{flex:1;padding:8px;border-radius:9px;border:1px solid var(--border);background:var(--card);cursor:pointer;text-align:center;font-size:10px;font-weight:600;transition:all .2s;color:var(--text2)}
+.popt.on-a{border-color:#E74C3C;background:rgba(192,57,43,.15);color:#E74C3C}
+.popt.on-m{border-color:#E67E22;background:rgba(230,126,34,.15);color:#E67E22}
+.popt.on-n{border-color:#27AE60;background:rgba(39,174,96,.15);color:#27AE60}
+.msubmit{width:100%;margin-top:14px;background:linear-gradient(135deg,#A8843A,#C9A96E);border:none;border-radius:9px;padding:12px;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:#0D0D0D;cursor:pointer}
+.mcancel{width:100%;margin-top:7px;background:none;border:1px solid var(--border);border-radius:9px;padding:10px;color:var(--text2);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:all .2s}
+.mcancel:hover{color:var(--text)}
+
+/* FAB */
+.fab{position:fixed;bottom:72px;right:calc(50% - 215px + 13px);width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#A8843A,#C9A96E);border:none;cursor:pointer;font-size:20px;color:#0D0D0D;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(201,169,110,.4);transition:transform .2s;z-index:99}
+.fab:hover{transform:scale(1.08)}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg2);border-top:1px solid var(--border);display:flex;padding:6px 0 12px;z-index:100}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:5px 0;color:var(--text3);transition:color .2s}
+.ni.on{color:var(--gold)}
+.ni:hover{color:var(--text)}
+.ni-icon{font-size:18px}
+.ni-lbl{font-size:7px;letter-spacing:1px;text-transform:uppercase;font-weight:500}
+
+/* CALENDARIO */
+.cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-month{font-family:'Playfair Display',serif;font-size:18px;color:var(--text)}
+.cal-nav-btn{width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.cal-nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:12px}
+.cdlbl{text-align:center;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);padding:5px 0}
+.cd{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text2);cursor:pointer;position:relative;transition:all .2s}
+.cd:hover{background:var(--card);color:var(--text)}
+.cd.today{background:var(--gold);color:#0D0D0D;font-weight:700}
+.cd.hev::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:3px;height:3px;border-radius:50%;background:var(--gold)}
+.cd.today::after{background:#0D0D0D}
+.cd.other{color:var(--text3);opacity:.35}
+
+/* HONORARIOS WA BUTTON */
+.hon-wa{display:inline-flex;align-items:center;gap:4px;background:#25D366;border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:600;color:#fff;cursor:pointer}
+.hon-wa-blue{background:#5DADE2}
+
+/* PORTAL */
+.portal-tabs{display:flex;gap:5px;margin-bottom:12px}
+.ptab{flex:1;padding:7px;border-radius:7px;border:1px solid var(--border);background:var(--card);text-align:center;cursor:pointer;font-size:9px;color:var(--text2);transition:all .2s;font-weight:500}
+.ptab.on{background:rgba(201,169,110,.15);border-color:var(--gold);color:var(--gold)}
+.nov-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:8px}
+.nov-card.nueva{border-left:3px solid var(--gold)}
+.nov-card.vista{opacity:.6}
+.nov-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:7px}
+.nov-exp{font-family:'Playfair Display',serif;font-size:12px;font-weight:600;color:var(--text);flex:1}
+.nov-tipo{font-size:10px;color:var(--text2);margin-bottom:4px}
+.nov-juz{font-size:9px;color:var(--text3)}
+.nov-txt{background:var(--card2);border-radius:7px;padding:8px 10px;font-size:9px;color:var(--text2);line-height:1.5;margin-bottom:9px}
+.nov-foot{display:flex;align-items:center;justify-content:space-between}
+.nov-time{font-size:9px;color:var(--text3)}
+.nov-btns{display:flex;gap:5px}
+.nov-btn{font-size:9px;padding:3px 8px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--text2);transition:all .2s}
+.nov-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nov-btn-gold{background:var(--gold);border-color:var(--gold);color:#0D0D0D;font-weight:600}
+
+/* DOCUMENTOS */
+.doc-sec-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.doc-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 12px;display:flex;align-items:center;gap:10px;margin-bottom:6px;cursor:pointer;transition:border-color .2s}
+.doc-row:hover{border-color:var(--gold)}
+.dic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.di-pdf{background:rgba(192,57,43,.15)}
+.di-word{background:rgba(52,152,219,.15)}
+.di-xl{background:rgba(39,174,96,.15)}
+.di-img{background:rgba(155,89,182,.15)}
+.doc-info{flex:1}
+.doc-name{font-size:12px;font-weight:500;color:var(--text)}
+.doc-meta{font-size:10px;color:var(--text2);margin-top:1px}
+.doc-size{font-size:9px;color:var(--text3)}
+.doc-upload{background:none;border:1px dashed var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;color:var(--text3);font-size:11px;transition:all .2s;width:100%;margin-top:4px}
+.doc-upload:hover{border-color:var(--gold);color:var(--gold)}
+
+/* INFORMES */
+.inf-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:15px;margin-bottom:11px}
+.inf-title{font-family:'Playfair Display',serif;font-size:14px;color:var(--text);margin-bottom:13px}
+.bars{display:flex;align-items:flex-end;gap:5px;height:90px;margin-bottom:7px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(to top,var(--gold2),var(--gold));min-height:4px}
+.bar-val{font-size:8px;color:var(--gold);font-weight:600}
+.bar-lbl{font-size:8px;color:var(--text3);text-align:center}
+.inf-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}
+.inf-stat{background:var(--card2);border-radius:8px;padding:9px;text-align:center}
+.inf-stat-val{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--text)}
+.inf-stat-lbl{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-top:2px}
+.prog-row{margin-bottom:9px}
+.prog-hdr{display:flex;justify-content:space-between;margin-bottom:4px}
+.prog-name{font-size:12px;color:var(--text)}
+.prog-val{font-size:11px}
+.prog-bar{height:6px;background:var(--card2);border-radius:3px}
+.prog-fill{height:6px;border-radius:3px}
+
+/* ALERTAS */
+.aa{background:var(--card);border-left:3px solid var(--gold);border-radius:10px;padding:11px 12px;margin-bottom:8px;display:flex;gap:9px}
+.aa.crit{border-left-color:var(--danger)}
+.aa.warn{border-left-color:var(--warning)}
+.aa.info{border-left-color:#5DADE2}
+.aa-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.aa-body{flex:1}
+.aa-title{font-size:12px;font-weight:600;color:var(--text)}
+.aa-sub{font-size:10px;color:var(--text2);margin-top:2px;line-height:1.4}
+.aa-time{font-size:9px;color:var(--text3);margin-top:3px}
+.aa-btns{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.aa-btn{font-size:9px;padding:3px 8px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--text2);transition:all .2s}
+.aa-btn:hover{border-color:var(--gold);color:var(--gold)}
+.aa-btn-gold{background:var(--gold);border-color:var(--gold);color:#0D0D0D;font-weight:600}
+
+/* CHAT */
+.contact-row{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:7px;cursor:pointer;transition:border-color .2s}
+.contact-row:hover{border-color:var(--gold)}
+.conv-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:15px;font-weight:700;flex-shrink:0}
+.conv-info{flex:1;min-width:0}
+.conv-name{font-size:13px;font-weight:600;color:var(--text)}
+.conv-prev{font-size:10px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv-meta{text-align:right;flex-shrink:0}
+.conv-time{font-size:9px;color:var(--text3)}
+.conv-unread{background:var(--gold);color:#0D0D0D;font-size:8px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;margin-top:4px;margin-left:auto}
+
+/* CHAT WINDOW */
+#chatWindow{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;max-width:430px;margin:0 auto}
+#chatWindow.show{display:flex}
+.cw-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 13px;display:flex;align-items:center;gap:9px}
+.cw-back{width:30px;height:30px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text2);flex-shrink:0}
+.cw-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:12px;font-weight:700;flex-shrink:0}
+.cw-name{font-size:13px;font-weight:600;color:var(--text)}
+.cw-status{font-size:9px;color:var(--success)}
+.messages{flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:9px}
+.msg{display:flex;flex-direction:column;max-width:80%}
+.msg.mine{align-self:flex-end;align-items:flex-end}
+.msg.theirs{align-self:flex-start;align-items:flex-start}
+.bubble{padding:8px 11px;border-radius:13px;font-size:12px;line-height:1.5}
+.mine .bubble{background:var(--gold);color:#0D0D0D;border-bottom-right-radius:3px}
+.theirs .bubble{background:var(--card);color:var(--text);border:1px solid var(--border);border-bottom-left-radius:3px}
+.msg-time{font-size:8px;color:var(--text3);margin-top:2px;padding:0 3px}
+.chat-bar{background:var(--bg2);border-top:1px solid var(--border);padding:9px 11px;display:flex;align-items:center;gap:7px}
+.chat-inp{flex:1;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:8px 13px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border .2s}
+.chat-inp:focus{border-color:var(--gold)}
+.chat-send{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#A8843A,#C9A96E);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+
+/* NOTIF PANEL */
+#notifPanel{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;max-width:430px;margin:0 auto}
+#notifPanel.show{display:flex}
+.np-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;justify-content:space-between}
+.np-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--text)}
+.np-mark{font-size:10px;color:var(--gold);cursor:pointer}
+.np-list{flex:1;overflow-y:auto;padding:11px}
+.notif{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 12px;margin-bottom:7px;display:flex;gap:9px;cursor:pointer;transition:border-color .2s}
+.notif:hover{border-color:var(--gold)}
+.notif.unread{border-left:3px solid var(--gold)}
+.notif-icon{font-size:20px;flex-shrink:0}
+.notif-body{flex:1}
+.notif-title{font-size:12px;font-weight:600;color:var(--text)}
+.notif-sub{font-size:10px;color:var(--text2);margin-top:2px;line-height:1.4}
+.notif-time{font-size:9px;color:var(--text3);margin-top:3px}
+
+/* PDF MODAL */
+#pdfModal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:400;display:none;flex-direction:column;max-width:430px;margin:0 auto}
+#pdfModal.show{display:flex}
+.pdf-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
+.pdf-title{font-size:13px;font-weight:500;color:var(--text)}
+.pdf-close{width:30px;height:30px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+.pdf-body{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
+.pdf-ph-icon{font-size:50px;opacity:.35;margin-bottom:12px}
+.pdf-ph-text{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* TOAST */
+#toast{position:fixed;top:66px;left:50%;transform:translateX(-50%);background:#25D366;color:#fff;padding:9px 16px;border-radius:20px;font-size:11px;font-weight:600;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;max-width:90%}
+#toast.show{opacity:1}
+
+/* ACCESS DENIED */
+.access-denied{text-align:center;padding:50px 22px}
+.ad-icon{font-size:44px;opacity:.35;margin-bottom:12px}
+.ad-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--text2);margin-bottom:7px}
+.ad-sub{font-size:11px;color:var(--text3);line-height:1.5}
+
+/* EQUIPO */
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:9px}
+.team-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.team-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;flex-shrink:0}
+.team-name{font-size:14px;font-weight:600;color:var(--text)}
+.team-role{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;color:var(--text3)}
+.team-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.ts{background:var(--card2);border-radius:8px;padding:9px;text-align:center}
+.ts-val{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text)}
+.ts-lbl{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-top:2px}
+
+/* EMPTY STATES & ADD BUTTONS */
+.add-row-btn{width:100%;background:var(--card);border:1px dashed var(--gold);border-radius:11px;padding:12px;text-align:center;font-size:12px;font-weight:600;color:var(--gold);cursor:pointer;margin-bottom:12px;transition:all .2s}
+.add-row-btn:hover{background:rgba(201,169,110,.1)}
+.empty-state{text-align:center;padding:40px 20px;display:none}
+.empty-state.show{display:block}
+.empty-icon{font-size:40px;opacity:.3;margin-bottom:10px}
+.empty-title{font-family:'Playfair Display',serif;font-size:14px;color:var(--text2);margin-bottom:4px}
+.empty-sub{font-size:11px;color:var(--text3);line-height:1.4}
+.empty-state-sm{text-align:center;padding:16px;font-size:11px;color:var(--text3);display:none}
+.empty-state-sm.show{display:block}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 22px">
+  <div class="seal">KE</div>
+  <div class="brand">KARINA ELENA</div>
+  <div class="brand-sub">Abogados</div>
+
+  <div id="step1" style="width:100%">
+    <div class="login-hint">Seleccioná tu perfil</div>
+    <div class="user-list">
+      <button class="user-row" onclick="selectUser('karina')">
+        <div class="uav" style="background:linear-gradient(135deg,#A8843A,#C9A96E);color:#0D0D0D">KE</div>
+        <div><div class="uname">Karina Elena</div><div class="urole role-a">Directora</div></div>
+        <span style="color:var(--text3);margin-left:auto">›</span>
+      </button>
+      <button class="user-row" onclick="selectUser('yani')">
+        <div class="uav" style="background:#5DADE2;color:#0D0D0D">YA</div>
+        <div><div class="uname">Yani</div><div class="urole role-e">Colaboradora</div></div>
+        <span style="color:var(--text3);margin-left:auto">›</span>
+      </button>
+      <button class="user-row" onclick="selectUser('mili')">
+        <div class="uav" style="background:#BB8FCE;color:#0D0D0D">MI</div>
+        <div><div class="uname">Mili</div><div class="urole role-e">Colaboradora</div></div>
+        <span style="color:var(--text3);margin-left:auto">›</span>
+      </button>
+      <button class="user-row" onclick="selectUser('josefina')">
+        <div class="uav" style="background:#58D68D;color:#0D0D0D">JO</div>
+        <div><div class="uname">Josefina</div><div class="urole role-e">Colaboradora</div></div>
+        <span style="color:var(--text3);margin-left:auto">›</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="step2" style="display:none;width:100%">
+    <div class="back-row" onclick="backStep()">
+      <span style="font-size:18px;color:var(--text3)">‹</span>
+      <span>Cambiar usuario</span>
+    </div>
+    <div class="sel-card" id="selCard">
+      <div class="uav" id="selAv"></div>
+      <div><div class="uname" id="selName"></div><div class="urole" id="selRole"></div></div>
+    </div>
+    <div class="pw-label">Contraseña</div>
+    <div class="pw-field" id="pwField">
+      <span>🔒</span>
+      <input type="password" id="pwInput" placeholder="Ingresá tu contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+      <span style="cursor:pointer;font-size:12px;color:var(--text3)" onclick="togglePw()">👁</span>
+    </div>
+    <div id="pwErr" class="pw-error">Contraseña incorrecta. Intentá de nuevo.</div>
+    <div class="pw-hint">Contraseña compartida del estudio</div>
+    <button class="btn-gold" onclick="doLogin()">Ingresar →</button>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="appShell" style="display:none;flex-direction:column;flex:1">
+
+  <header class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-seal">KE</div>
+      <div><div class="hdr-brand">KARINA ELENA</div><div class="hdr-sub">Abogados</div></div>
+    </div>
+    <div class="hdr-right">
+      <div class="ico-btn" id="installBtn" onclick="installApp()" style="display:none" title="Instalar app">⬇️</div>
+      <div class="ico-btn" onclick="openNotif()">🔔<span id="notifDot" style="position:absolute;top:2px;right:2px;width:7px;height:7px;background:#C0392B;border-radius:50%;border:1.5px solid var(--bg2)"></span></div>
+      <div class="ico-btn" onclick="toggleTheme()" id="themeBtn">☀️</div>
+      <div class="pill" onclick="doLogout()">
+        <div class="pill-av" id="pillAv"></div>
+        <span class="pill-name" id="pillName"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- DASHBOARD -->
+    <section class="screen active" id="screen-dashboard">
+      <div class="greet-time" id="greetDate"></div>
+      <div class="greet-name">Buenos días, <b id="greetName"></b></div>
+      <div id="dashStats">
+        <div class="stats-grid">
+          <div class="stat" onclick="goNav('clientes')"><div class="stat-icon">👤</div><div class="stat-val" id="statClientes">0</div><div class="stat-lbl">Clientes activos</div></div>
+          <div class="stat" onclick="goNav('expedientes')"><div class="stat-icon">📁</div><div class="stat-val" id="statExp">0</div><div class="stat-lbl">Expedientes</div></div>
+          <div class="stat" onclick="goNav('honorarios')"><div class="stat-icon">💰</div><div class="stat-val" id="statHon">$0</div><div class="stat-lbl">Hon. pendientes</div></div>
+          <div class="stat" onclick="goNav('tareas')"><div class="stat-icon">✅</div><div class="stat-val" id="statTareas">0</div><div class="stat-lbl">Tareas pendientes</div></div>
+        </div>
+        <div class="divtxt"><span>Alertas del día</span></div>
+        <div id="dashAlerts"></div>
+        <div id="dashAlertsEmpty" class="empty-state-sm">Sin alertas por el momento</div>
+      </div>
+      <div class="divtxt"><span>Próximas audiencias</span></div>
+      <div id="dashEvents"></div>
+      <div id="dashEventsEmpty" class="empty-state-sm">No hay audiencias cargadas todavía</div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="screen" id="screen-clientes">
+      <div class="eyebrow">Gestión</div><div class="stitle">Clientes</div>
+      <div class="search-bar"><span style="color:var(--text3);font-size:12px">🔍</span><input type="text" placeholder="Buscar cliente..." oninput="filterClients(this.value)"></div>
+      <button class="add-row-btn" onclick="openClientModal()">➕ Agregar cliente</button>
+      <div id="clientList"></div>
+      <div id="clientEmpty" class="empty-state">
+        <div class="empty-icon">👤</div>
+        <div class="empty-title">Todavía no hay clientes</div>
+        <div class="empty-sub">Tocá "Agregar cliente" para cargar el primero</div>
+      </div>
+    </section>
+
+    <!-- EXPEDIENTES -->
+    <section class="screen" id="screen-expedientes">
+      <div class="eyebrow">Gestión</div><div class="stitle">Expedientes</div>
+      <div class="filter-bar">
+        <div class="fpill on" onclick="filterExp('todos',this)">Todos</div>
+        <div class="fpill" onclick="filterExp('activo',this)">✅ Activos</div>
+        <div class="fpill" onclick="filterExp('tramite',this)">🔄 Trámite</div>
+        <div class="fpill" onclick="filterExp('cerrado',this)">📁 Cerrados</div>
+        <div class="fpill" onclick="filterExp('civil',this)">⚖️ Civil</div>
+        <div class="fpill" onclick="filterExp('laboral',this)">👷 Laboral</div>
+        <div class="fpill" onclick="filterExp('familia',this)">👨‍👩‍👧 Familia</div>
+      </div>
+      <button class="add-row-btn" onclick="openExpModal()">➕ Agregar expediente</button>
+      <div id="expList"></div>
+      <div id="expEmpty" class="empty-state">
+        <div class="empty-icon">📁</div>
+        <div class="empty-title">Todavía no hay expedientes</div>
+        <div class="empty-sub">Tocá "Agregar expediente" para cargar el primero</div>
+      </div>
+    </section>
+
+    <!-- CALENDARIO -->
+    <section class="screen" id="screen-calendario">
+      <div class="eyebrow">Agenda</div><div class="stitle">Calendario Jurídico</div>
+      <div class="cal-hdr"><div class="cal-month">Junio 2026</div><div style="display:flex;gap:5px"><button class="cal-nav-btn">‹</button><button class="cal-nav-btn">›</button></div></div>
+      <div class="cal-grid">
+        <div class="cdlbl">Do</div><div class="cdlbl">Lu</div><div class="cdlbl">Ma</div><div class="cdlbl">Mi</div><div class="cdlbl">Ju</div><div class="cdlbl">Vi</div><div class="cdlbl">Sa</div>
+        <div class="cd other">1</div><div class="cd other">2</div><div class="cd other">3</div><div class="cd other">4</div><div class="cd other">5</div><div class="cd other">6</div><div class="cd other">7</div>
+        <div class="cd other">8</div><div class="cd other">9</div><div class="cd other">10</div><div class="cd other">11</div><div class="cd other">12</div><div class="cd other">13</div><div class="cd other">14</div>
+        <div class="cd today">15</div><div class="cd hev">16</div><div class="cd">17</div><div class="cd hev">18</div><div class="cd">19</div><div class="cd">20</div><div class="cd">21</div>
+        <div class="cd">22</div><div class="cd hev">23</div><div class="cd">24</div><div class="cd">25</div><div class="cd hev">26</div><div class="cd">27</div><div class="cd">28</div>
+        <div class="cd">29</div><div class="cd hev">30</div><div class="cd other">1</div><div class="cd other">2</div><div class="cd other">3</div><div class="cd other">4</div><div class="cd other">5</div>
+      </div>
+      <div class="divtxt"><span>Eventos del mes</span></div>
+      <div class="ev-row"><div class="edate"><div class="eday">16</div><div class="emon">Jun</div></div><div class="ev-info"><div class="ev-title">Audiencia — Rodríguez vs. Provincia</div><div class="ev-meta">Juzgado Laboral Nº 2 · Río Cuarto · 10:00 hs</div></div><div class="badge badge-blue">Civil</div></div>
+      <div class="ev-row"><div class="edate"><div class="eday">18</div><div class="emon">Jun</div></div><div class="ev-info"><div class="ev-title">Mediación — Fernández</div><div class="ev-meta">Centro de Mediación · Río Cuarto · 14:30 hs</div></div><div class="badge badge-purple">Familia</div></div>
+      <div class="ev-row"><div class="edate"><div class="eday">23</div><div class="emon">Jun</div></div><div class="ev-info"><div class="ev-title">Audiencia — Torres vs. Empresa SA</div><div class="ev-meta">Juzgado Laboral Nº 2 · Río Cuarto · 09:00 hs</div></div><div class="badge badge-green">Laboral</div></div>
+      <div class="ev-row"><div class="edate"><div class="eday">30</div><div class="emon">Jun</div></div><div class="ev-info"><div class="ev-title">Reunión cliente — López, Ana</div><div class="ev-meta">Estudio · Río Cuarto · 11:00 hs</div></div><div class="badge badge-purple">Familia</div></div>
+    </section>
+
+    <!-- HONORARIOS -->
+    <section class="screen" id="screen-honorarios">
+      <div id="honContent">
+        <div class="eyebrow">Finanzas</div><div class="stitle">Honorarios</div>
+        <div class="hon-sum" id="honSummary">
+          <div class="hon-lbl">Total facturado</div>
+          <div class="hon-total">$0</div>
+          <div class="hon-grid">
+            <div class="hon-item"><div class="hon-val cup">$0</div><div class="hon-lbl2">Cobrado</div></div>
+            <div class="hon-item"><div class="hon-val cwarn">$0</div><div class="hon-lbl2">Pendiente</div></div>
+            <div class="hon-item"><div class="hon-val cdanger">$0</div><div class="hon-lbl2">Vencido</div></div>
+          </div>
+        </div>
+        <button class="add-row-btn" onclick="openHonModal()">➕ Agregar honorario</button>
+        <div id="honList"></div>
+        <div id="honEmpty" class="empty-state">
+          <div class="empty-icon">💰</div>
+          <div class="empty-title">Todavía no hay honorarios</div>
+          <div class="empty-sub">Tocá "Agregar honorario" para cargar el primero</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAREAS -->
+    <section class="screen" id="screen-tareas">
+      <div class="eyebrow">Organización</div>
+      <div class="stitle" id="tareasTitle">Tareas del equipo</div>
+      <div class="filter-bar" id="tareasFilter">
+        <div class="fpill on" onclick="filterTasks('todas',this)">Todas</div>
+        <div class="fpill" onclick="filterTasks('yani',this)">Yani</div>
+        <div class="fpill" onclick="filterTasks('mili',this)">Mili</div>
+        <div class="fpill" onclick="filterTasks('josefina',this)">Josefina</div>
+        <div class="fpill" onclick="filterTasks('karina',this)">Karina</div>
+      </div>
+      <div id="taskList"></div>
+      <div id="taskEmpty" class="empty-state">
+        <div class="empty-icon">✅</div>
+        <div class="empty-title">Todavía no hay tareas</div>
+        <div class="empty-sub">Tocá el botón ＋ para crear la primera</div>
+      </div>
+    </section>
+
+    <!-- DOCUMENTOS -->
+    <section class="screen" id="screen-documentos">
+      <div class="eyebrow">Biblioteca</div><div class="stitle">Documentos</div>
+      <div class="search-bar"><span style="color:var(--text3);font-size:12px">🔍</span><input type="text" placeholder="Buscar documento..." oninput="filterDocs(this.value)"></div>
+      <div class="filter-bar">
+        <div class="fpill on" onclick="filterDocType('todos',this)">Todos</div>
+        <div class="fpill" onclick="filterDocType('pdf',this)">📄 PDF</div>
+        <div class="fpill" onclick="filterDocType('word',this)">📝 Word</div>
+        <div class="fpill" onclick="filterDocType('excel',this)">📊 Excel</div>
+        <div class="fpill" onclick="filterDocType('img',this)">🖼️ Imagen</div>
+      </div>
+      <div id="docsContainer"></div>
+      <div id="docsEmpty" class="empty-state">
+        <div class="empty-icon">📂</div>
+        <div class="empty-title">Todavía no hay documentos</div>
+        <div class="empty-sub">Subí el primero con el botón de abajo</div>
+      </div>
+      <label class="doc-upload">➕ Subir documento (PDF, Word, Excel, imagen)<input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" multiple style="display:none" onchange="uploadDocs(this)"></label>
+    </section>
+
+    <!-- CHAT -->
+    <section class="screen" id="screen-chat">
+      <div class="eyebrow">Comunicación</div><div class="stitle">Chat interno</div>
+      <div id="contactList"></div>
+    </section>
+
+    <!-- PORTAL -->
+    <section class="screen" id="screen-novedades">
+      <div class="eyebrow">Portales · Río Cuarto</div><div class="stitle">Novedades Judiciales</div>
+      <div class="portal-tabs">
+        <div class="ptab on" onclick="filterNov('todas',this)">Todas</div>
+        <div class="ptab" onclick="filterNov('cordoba',this)">⚖️ P.J. Córdoba</div>
+        <div class="ptab" onclick="filterNov('nacion',this)">🏛️ P.J. Nación</div>
+      </div>
+      <button class="add-row-btn" onclick="openNovModal()">➕ Agregar novedad</button>
+      <div id="novList"></div>
+      <div id="novEmpty" class="empty-state">
+        <div class="empty-icon">⚖️</div>
+        <div class="empty-title">Todavía no hay novedades cargadas</div>
+        <div class="empty-sub">Agregalas a mano mientras conectamos el portal real</div>
+      </div>
+    </section>
+
+    <!-- ALERTAS -->
+    <section class="screen" id="screen-alertas">
+      <div class="eyebrow">Sistema</div><div class="stitle">Alertas automáticas</div>
+      <div class="filter-bar">
+        <div class="fpill on" onclick="filterAlertas('todas',this)">Todas</div>
+        <div class="fpill" onclick="filterAlertas('crit',this)">🔴 Críticas</div>
+        <div class="fpill" onclick="filterAlertas('warn',this)">🟡 Avisos</div>
+        <div class="fpill" onclick="filterAlertas('info',this)">🔵 Info</div>
+      </div>
+      <div id="alertasList"></div>
+      <div id="alertasEmpty" class="empty-state">
+        <div class="empty-icon">🔔</div>
+        <div class="empty-title">No hay alertas todavía</div>
+        <div class="empty-sub">Se generan solas a medida que cargues expedientes, honorarios y tareas con fechas próximas</div>
+      </div>
+    </section>
+
+    <!-- INFORMES -->
+    <section class="screen" id="screen-informes">
+      <div class="eyebrow">Análisis</div><div class="stitle">Informes</div>
+      <div class="inf-card">
+        <div class="inf-title">💰 Honorarios</div>
+        <div class="inf-stats">
+          <div class="inf-stat"><div class="inf-stat-val cup" id="infCobrado">$0</div><div class="inf-stat-lbl">Cobrado</div></div>
+          <div class="inf-stat"><div class="inf-stat-val cwarn" id="infPendiente">$0</div><div class="inf-stat-lbl">Pendiente</div></div>
+          <div class="inf-stat"><div class="inf-stat-val cdanger" id="infVencido">$0</div><div class="inf-stat-lbl">Vencido</div></div>
+          <div class="inf-stat"><div class="inf-stat-val" id="infTotal">$0</div><div class="inf-stat-lbl">Total cargado</div></div>
+        </div>
+      </div>
+      <div class="inf-card">
+        <div class="inf-title">👥 Rendimiento del equipo</div>
+        <div id="infEquipo"></div>
+        <div id="infEquipoEmpty" class="empty-state-sm">Asigná tareas al equipo para ver el rendimiento</div>
+      </div>
+      <div class="inf-card">
+        <div class="inf-title">📁 Expedientes</div>
+        <div class="inf-stats">
+          <div class="inf-stat"><div class="inf-stat-val cup" id="infExpActivo">0</div><div class="inf-stat-lbl">Activos</div></div>
+          <div class="inf-stat"><div class="inf-stat-val" style="color:var(--gold)" id="infExpTramite">0</div><div class="inf-stat-lbl">En trámite</div></div>
+          <div class="inf-stat"><div class="inf-stat-val" style="color:var(--text3)" id="infExpCerrado">0</div><div class="inf-stat-lbl">Cerrados</div></div>
+          <div class="inf-stat"><div class="inf-stat-val" id="infExpTotal">0</div><div class="inf-stat-lbl">Total</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EQUIPO -->
+    <section class="screen" id="screen-equipo">
+      <div class="eyebrow">Gestión</div><div class="stitle">Mi equipo</div>
+      <div id="teamList"></div>
+    </section>
+
+  </main>
+
+  <nav class="bnav" id="bnav"></nav>
+  <button class="fab" onclick="openTaskModal()">＋</button>
+
+  <!-- NUEVA TAREA MODAL -->
+  <div class="overlay" id="taskModal">
+    <div class="modal">
+      <div class="mhandle"></div>
+      <div class="mtitle">Nueva tarea</div>
+      <span class="flabel">Título *</span>
+      <input class="finput" id="tf-titulo" placeholder="Ej: Presentar escrito en Exp. 1234/25">
+      <span class="flabel">Descripción</span>
+      <textarea class="finput" id="tf-desc" placeholder="Instrucciones para la colaboradora..."></textarea>
+      <span class="flabel">Asignar a *</span>
+      <div class="arow" id="arow">
+        <div class="aopt" data-uid="yani" onclick="selA(this)"><div style="width:20px;height:20px;border-radius:50%;background:#5DADE2;color:#0D0D0D;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Playfair Display',serif">YA</div>Yani</div>
+        <div class="aopt" data-uid="mili" onclick="selA(this)"><div style="width:20px;height:20px;border-radius:50%;background:#BB8FCE;color:#0D0D0D;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Playfair Display',serif">MI</div>Mili</div>
+        <div class="aopt" data-uid="josefina" onclick="selA(this)"><div style="width:20px;height:20px;border-radius:50%;background:#58D68D;color:#0D0D0D;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Playfair Display',serif">JO</div>Josefina</div>
+      </div>
+      <span class="flabel">Prioridad *</span>
+      <div class="prow">
+        <div class="popt" data-p="alta" onclick="selP(this)">🔴 Urgente</div>
+        <div class="popt" data-p="media" onclick="selP(this)">🟡 Media</div>
+        <div class="popt" data-p="normal" onclick="selP(this)">🟢 Normal</div>
+      </div>
+      <span class="flabel">Fecha límite</span>
+      <input class="finput" id="tf-fecha" type="date">
+      <span class="flabel">Adjuntar archivo</span>
+      <label class="upload-lbl" style="font-size:12px;padding:9px 13px">📎 PDF, Word, Excel o imagen<input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" multiple style="display:none" onchange="setTaskFiles(this)"></label>
+      <div id="tf-files" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px"></div>
+      <button class="msubmit" onclick="submitTask()">✉️ Enviar tarea al equipo</button>
+      <button class="mcancel" onclick="closeTaskModal()">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- NUEVO CLIENTE MODAL -->
+  <div class="overlay" id="clientModal">
+    <div class="modal">
+      <div class="mhandle"></div>
+      <div class="mtitle">Nuevo cliente</div>
+      <span class="flabel">Nombre y apellido *</span>
+      <input class="finput" id="cf-nombre" placeholder="Ej: Martín García">
+      <span class="flabel">Fuero</span>
+      <select class="finput" id="cf-fuero">
+        <option value="Civil">Civil</option>
+        <option value="Laboral">Laboral</option>
+        <option value="Familia">Familia</option>
+        <option value="Civil/Laboral">Civil / Laboral</option>
+        <option value="Otro">Otro</option>
+      </select>
+      <span class="flabel">Teléfono (WhatsApp)</span>
+      <input class="finput" id="cf-tel" placeholder="Ej: 358-4123456" type="tel">
+      <span class="flabel">Notas</span>
+      <textarea class="finput" id="cf-notas" placeholder="Información adicional del cliente..."></textarea>
+      <button class="msubmit" onclick="submitClient()">✅ Guardar cliente</button>
+      <button class="mcancel" onclick="closeModal('clientModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- NUEVO EXPEDIENTE MODAL -->
+  <div class="overlay" id="expModal">
+    <div class="modal">
+      <div class="mhandle"></div>
+      <div class="mtitle">Nuevo expediente</div>
+      <span class="flabel">Carátula *</span>
+      <input class="finput" id="ef-caratula" placeholder="Ej: García c/ Municipalidad s/ Daños">
+      <span class="flabel">Número de expediente</span>
+      <input class="finput" id="ef-numero" placeholder="Ej: 4521/2024">
+      <span class="flabel">Juzgado</span>
+      <input class="finput" id="ef-juzgado" placeholder="Ej: Civil Nº 3 · Río Cuarto">
+      <span class="flabel">Fuero</span>
+      <select class="finput" id="ef-fuero">
+        <option value="civil">Civil</option>
+        <option value="laboral">Laboral</option>
+        <option value="familia">Familia</option>
+      </select>
+      <span class="flabel">Estado</span>
+      <select class="finput" id="ef-estado">
+        <option value="activo">Activo</option>
+        <option value="tramite">En trámite</option>
+        <option value="cerrado">Cerrado</option>
+      </select>
+      <span class="flabel">Fecha relevante (vencimiento/audiencia)</span>
+      <input class="finput" id="ef-fecha" type="date">
+      <button class="msubmit" onclick="submitExp()">✅ Guardar expediente</button>
+      <button class="mcancel" onclick="closeModal('expModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- NUEVO HONORARIO MODAL -->
+  <div class="overlay" id="honModal">
+    <div class="modal">
+      <div class="mhandle"></div>
+      <div class="mtitle">Nuevo honorario</div>
+      <span class="flabel">Cliente *</span>
+      <input class="finput" id="hf-cliente" placeholder="Ej: García, Martín">
+      <span class="flabel">Concepto</span>
+      <input class="finput" id="hf-concepto" placeholder="Ej: Daños y perjuicios — Cuota 1/2">
+      <span class="flabel">Monto *</span>
+      <input class="finput" id="hf-monto" placeholder="Ej: 120000" type="number">
+      <span class="flabel">Estado</span>
+      <select class="finput" id="hf-estado">
+        <option value="pendiente">Pendiente</option>
+        <option value="vencido">Vencido</option>
+        <option value="cobrado">Cobrado</option>
+      </select>
+      <span class="flabel">Fecha de vencimiento</span>
+      <input class="finput" id="hf-vencimiento" type="date">
+      <button class="msubmit" onclick="submitHon()">✅ Guardar honorario</button>
+      <button class="mcancel" onclick="closeModal('honModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- NUEVA NOVEDAD MODAL -->
+  <div class="overlay" id="novModal">
+    <div class="modal">
+      <div class="mhandle"></div>
+      <div class="mtitle">Nueva novedad judicial</div>
+      <span class="flabel">Expediente *</span>
+      <input class="finput" id="nf-exp" placeholder="Ej: García c/ Municipalidad">
+      <span class="flabel">Tipo de movimiento</span>
+      <input class="finput" id="nf-tipo" placeholder="Ej: Providencia de trámite">
+      <span class="flabel">Juzgado</span>
+      <input class="finput" id="nf-juzgado" placeholder="Ej: Civil Nº 3 · Río Cuarto">
+      <span class="flabel">Portal</span>
+      <select class="finput" id="nf-portal">
+        <option value="cordoba">P.J. Córdoba</option>
+        <option value="nacion">P.J. Nación</option>
+      </select>
+      <span class="flabel">Texto / detalle (opcional)</span>
+      <textarea class="finput" id="nf-texto" placeholder="Extracto de la resolución..."></textarea>
+      <button class="msubmit" onclick="submitNov()">✅ Guardar novedad</button>
+      <button class="mcancel" onclick="closeModal('novModal')">Cancelar</button>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- CHAT WINDOW -->
+<div id="chatWindow">
+  <div class="cw-hdr">
+    <div class="cw-back" onclick="closeChatWin()">‹</div>
+    <div class="cw-av" id="cwAv"></div>
+    <div style="flex:1"><div class="cw-name" id="cwName"></div><div class="cw-status">● En línea</div></div>
+  </div>
+  <div class="messages" id="messages"></div>
+  <div class="chat-bar">
+    <input class="chat-inp" id="chatInp" placeholder="Escribí un mensaje..." onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="chat-send" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<!-- NOTIF PANEL -->
+<div id="notifPanel">
+  <div class="np-hdr">
+    <div style="display:flex;align-items:center;gap:9px"><div class="cw-back" onclick="closeNotif()">‹</div><div class="np-title">Notificaciones</div></div>
+    <span class="np-mark" onclick="markAllRead()">Marcar todas leídas</span>
+  </div>
+  <div class="np-list">
+    <div class="notif unread" onclick="closeNotif();goNav('tareas')"><div class="notif-icon">✅</div><div class="notif-body"><div class="notif-title">Josefina finalizó una tarea</div><div class="notif-sub">"Cargar expediente Torres" — completada</div><div class="notif-time">Hace 5 minutos</div></div></div>
+    <div class="notif unread" onclick="closeNotif();goNav('novedades')"><div class="notif-icon">⚖️</div><div class="notif-body"><div class="notif-title">Nueva novedad judicial</div><div class="notif-sub">García c/ Municipalidad — Providencia · Juzgado Civil Nº 3 · Río Cuarto</div><div class="notif-time">Hace 23 minutos</div></div></div>
+    <div class="notif unread" onclick="closeNotif();goNav('alertas')"><div class="notif-icon">🔴</div><div class="notif-body"><div class="notif-title">Vencimiento crítico HOY</div><div class="notif-sub">Exp. 4521/2024 — Presentar escrito antes de las 12:00 hs</div><div class="notif-time">Hace 1 hora</div></div></div>
+    <div class="notif unread" onclick="closeNotif();goNav('chat')"><div class="notif-icon">💬</div><div class="notif-body"><div class="notif-title">Nuevo mensaje de Mili</div><div class="notif-sub">¿El convenio Fernández va con firma digital?</div><div class="notif-time">Hace 2 horas</div></div></div>
+    <div class="notif" onclick="closeNotif();goNav('honorarios')"><div class="notif-icon">💰</div><div class="notif-body"><div class="notif-title">Honorario vencido — López, Ana</div><div class="notif-sub">$85.000 sin cobrar desde el 12/06/2026</div><div class="notif-time">Hace 3 horas</div></div></div>
+  </div>
+</div>
+
+<!-- PDF MODAL -->
+<div id="pdfModal">
+  <div class="pdf-hdr"><span class="pdf-title" id="pdfTitle">Documento</span><div class="pdf-close" onclick="closePdf()">✕</div></div>
+  <div class="pdf-body" id="pdfBody"><div><div class="pdf-ph-icon">📄</div><div class="pdf-ph-text">En la app real este documento<br>se abre aquí con visor integrado.<br>Podés hacer zoom y descargar.</div></div></div>
+</div>
+
+<!-- IOS INSTALL BANNER -->
+<div id="iosBanner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--gold);border-radius:14px;padding:12px 16px;z-index:600;max-width:390px;width:90%;box-shadow:0 4px 20px rgba(0,0,0,.4)">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="width:42px;height:42px;border-radius:10px;background:radial-gradient(circle,#2a2a2a,#0a0a0a);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--gold);flex-shrink:0">KE</div>
+    <div style="flex:1">
+      <div style="font-size:12px;font-weight:600;color:var(--text)">Instalar KE Abogados</div>
+      <div style="font-size:10px;color:var(--text2);margin-top:2px">Tocá <b style="color:var(--gold)">Compartir</b> → <b style="color:var(--gold)">Agregar a pantalla de inicio</b></div>
+    </div>
+    <div onclick="document.getElementById('iosBanner').style.display='none'" style="font-size:18px;color:var(--text3);cursor:pointer;padding:4px">✕</div>
+  </div>
+  <div style="margin-top:10px;text-align:center;font-size:20px;color:var(--text3)">
+    Tocá <span style="color:var(--gold)">□↑</span> abajo → "Agregar a pantalla de inicio"
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+</div><!-- /app -->
+
+<script>
+var PASS = 'estudio2026';
+var currentUser = null;
+var pendingUser = null;
+var selAssignee = null;
+var selPrio = null;
+var activeChatUid = null;
+
+var USERS = {
+  karina:   {name:'Karina',   ini:'KE', bg:'#C9A96E', role:'admin'},
+  yani:     {name:'Yani',     ini:'YA', bg:'#5DADE2', role:'emp'},
+  mili:     {name:'Mili',     ini:'MI', bg:'#BB8FCE', role:'emp'},
+  josefina: {name:'Josefina', ini:'JO', bg:'#58D68D', role:'emp'}
+};
+
+var NAV_ADMIN = [
+  {id:'dashboard',icon:'🏠',lbl:'Inicio'},
+  {id:'clientes',icon:'👤',lbl:'Clientes'},
+  {id:'expedientes',icon:'📁',lbl:'Exptes.'},
+  {id:'calendario',icon:'📅',lbl:'Agenda'},
+  {id:'honorarios',icon:'💰',lbl:'Honor.'},
+  {id:'tareas',icon:'✅',lbl:'Tareas'},
+  {id:'documentos',icon:'📂',lbl:'Docs'},
+  {id:'chat',icon:'💬',lbl:'Chat'},
+  {id:'novedades',icon:'⚖️',lbl:'Portal'},
+  {id:'alertas',icon:'🔔',lbl:'Alertas'},
+  {id:'informes',icon:'📊',lbl:'Informes'},
+  {id:'equipo',icon:'👥',lbl:'Equipo'}
+];
+
+var NAV_EMP = [
+  {id:'dashboard',icon:'🏠',lbl:'Inicio'},
+  {id:'clientes',icon:'👤',lbl:'Clientes'},
+  {id:'expedientes',icon:'📁',lbl:'Exptes.'},
+  {id:'calendario',icon:'📅',lbl:'Agenda'},
+  {id:'tareas',icon:'✅',lbl:'Tareas'},
+  {id:'documentos',icon:'📂',lbl:'Docs'},
+  {id:'chat',icon:'💬',lbl:'Chat'}
+];
+
+var CHATS = {
+  karina: [
+    {uid:'yani', name:'Yani', bg:'#5DADE2', ini:'YA', prev:'El poder de García ya está firmado?', time:'10:32', unread:2,
+     msgs:[{from:'yani',text:'Buenos días Karina!',time:'08:15'},{from:'karina',text:'Buenos días! Presentá el escrito de García hoy antes del mediodía.',time:'08:20'},{from:'yani',text:'El poder de García ya está firmado?',time:'10:32'}]},
+    {uid:'mili', name:'Mili', bg:'#BB8FCE', ini:'MI', prev:'Listo, lo revisé con observaciones.', time:'09:15', unread:0,
+     msgs:[{from:'karina',text:'Mili, revisaste el convenio Fernández?',time:'08:45'},{from:'mili',text:'Sí, hay una cláusula que no me cierra en el punto 4.',time:'09:10'},{from:'karina',text:'Marcala como observación y me lo mandás.',time:'09:12'},{from:'mili',text:'Listo, lo revisé con observaciones.',time:'09:15'}]},
+    {uid:'josefina', name:'Josefina', bg:'#58D68D', ini:'JO', prev:'Ya cargué el expediente Torres ✓', time:'Ayer', unread:0,
+     msgs:[{from:'karina',text:'Jose, subiste el expediente Torres?',time:'Ayer'},{from:'josefina',text:'Ya cargué el expediente Torres ✓',time:'Ayer'}]}
+  ],
+  yani:     [{uid:'karina',name:'Karina Elena',bg:'#C9A96E',ini:'KE',prev:'Presentá el escrito de García hoy.',time:'08:20',unread:1,msgs:[{from:'karina',text:'Buenos días! Presentá el escrito de García hoy antes del mediodía.',time:'08:20'},{from:'yani',text:'Entendido! El poder de García ya está firmado?',time:'10:32'}]}],
+  mili:     [{uid:'karina',name:'Karina Elena',bg:'#C9A96E',ini:'KE',prev:'Marcala como observación.',time:'09:12',unread:0,msgs:[{from:'karina',text:'Mili, revisaste el convenio Fernández?',time:'08:45'},{from:'mili',text:'Sí, hay una cláusula que no me cierra.',time:'09:10'},{from:'karina',text:'Marcala como observación y me lo mandás.',time:'09:12'}]}],
+  josefina: [{uid:'karina',name:'Karina Elena',bg:'#C9A96E',ini:'KE',prev:'Subiste el expediente Torres?',time:'Ayer',unread:0,msgs:[{from:'karina',text:'Jose, subiste el expediente Torres?',time:'Ayer'},{from:'josefina',text:'Ya lo cargué completo ✓',time:'Ayer'}]}]
+};
+
+function selectUser(uid) {
+  pendingUser = uid;
+  var u = USERS[uid];
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'block';
+  var av = document.getElementById('selAv');
+  var bgs = {karina:'linear-gradient(135deg,#A8843A,#C9A96E)',yani:'#5DADE2',mili:'#BB8FCE',josefina:'#58D68D'};
+  av.style.background = bgs[uid];
+  av.style.color = '#0D0D0D';
+  av.textContent = u.ini;
+  av.style.width = '42px';
+  av.style.height = '42px';
+  av.style.borderRadius = '50%';
+  av.style.display = 'flex';
+  av.style.alignItems = 'center';
+  av.style.justifyContent = 'center';
+  av.style.fontFamily = "'Playfair Display',serif";
+  av.style.fontSize = '15px';
+  av.style.fontWeight = '700';
+  document.getElementById('selName').textContent = u.name;
+  var roleEl = document.getElementById('selRole');
+  roleEl.textContent = u.role === 'admin' ? 'Directora · Acceso total' : 'Colaboradora';
+  roleEl.className = 'urole ' + (u.role === 'admin' ? 'role-a' : 'role-e');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwErr').style.display = 'none';
+  document.getElementById('pwField').style.borderColor = 'var(--border)';
+  setTimeout(function() { document.getElementById('pwInput').focus(); }, 100);
+}
+
+function backStep() {
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('step1').style.display = 'block';
+  pendingUser = null;
+}
+
+function togglePw() {
+  var inp = document.getElementById('pwInput');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function doLogin() {
+  var pw = document.getElementById('pwInput').value;
+  if (pw !== PASS) {
+    document.getElementById('pwErr').style.display = 'block';
+    document.getElementById('pwField').style.borderColor = '#E74C3C';
+    return;
+  }
+  startApp(pendingUser);
+}
+
+// ════════════════════════════════════════
+// MOTOR DE DATOS — localStorage
+// ════════════════════════════════════════
+var DB_KEY = 'ke_abogados_data_v1';
+
+function loadDB() {
+  try {
+    var raw = localStorage.getItem(DB_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return { clientes: [], expedientes: [], honorarios: [], tareas: [], novedades: [], docs: [] };
+}
+
+function saveDB() {
+  try { localStorage.setItem(DB_KEY, JSON.stringify(DB)); } catch (e) {}
+}
+
+var DB = loadDB();
+
+function uid() { return 'id_' + Date.now() + '_' + Math.floor(Math.random() * 9999); }
+
+function fmtMoney(n) {
+  n = Number(n) || 0;
+  return '$' + n.toLocaleString('es-AR');
+}
+
+function initialsOf(name) {
+  var parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// ── RENDER: CLIENTES ──
+function renderClients() {
+  var list = document.getElementById('clientList');
+  var empty = document.getElementById('clientEmpty');
+  if (!list) return;
+  if (!DB.clientes.length) {
+    list.innerHTML = '';
+    empty.classList.add('show');
+    return;
+  }
+  empty.classList.remove('show');
+  var html = '';
+  for (var i = 0; i < DB.clientes.length; i++) {
+    var c = DB.clientes[i];
+    var expCount = 0;
+    for (var j = 0; j < DB.expedientes.length; j++) {
+      if (DB.expedientes[j].clienteId === c.id) expCount++;
+    }
+    html += '<div class="client-row" data-name="' + c.nombre.toLowerCase() + '">';
+    html += '<div class="cav">' + initialsOf(c.nombre) + '</div>';
+    html += '<div class="cinfo"><div class="cname">' + c.nombre + '</div>';
+    html += '<div class="cexp">' + expCount + ' expediente(s) · ' + (c.fuero || 'Sin fuero') + '</div></div>';
+    if (c.tel) html += '<button class="wa-btn" onclick="waCliente(\'' + c.nombre.replace(/'/g, "\\'") + '\',\'' + (c.fuero||'') + '\',\'—\',\'' + c.tel + '\')">📱 WA</button>';
+    html += '</div>';
+  }
+  list.innerHTML = html;
+}
+
+function openClientModal() {
+  document.getElementById('cf-nombre').value = '';
+  document.getElementById('cf-tel').value = '';
+  document.getElementById('cf-notas').value = '';
+  document.getElementById('clientModal').classList.add('show');
+}
+
+function submitClient() {
+  var nombre = document.getElementById('cf-nombre').value.trim();
+  if (!nombre) { showToast('⚠️ Escribí el nombre del cliente'); return; }
+  var c = {
+    id: uid(),
+    nombre: nombre,
+    fuero: document.getElementById('cf-fuero').value,
+    tel: document.getElementById('cf-tel').value.trim(),
+    notas: document.getElementById('cf-notas').value.trim(),
+    fecha: new Date().toISOString()
+  };
+  DB.clientes.push(c);
+  saveDB();
+  closeModal('clientModal');
+  renderClients();
+  renderDashboard();
+  showToast('✅ Cliente agregado: ' + nombre);
+}
+
+// ── RENDER: EXPEDIENTES ──
+function renderExpedientes() {
+  var list = document.getElementById('expList');
+  var empty = document.getElementById('expEmpty');
+  if (!list) return;
+  if (!DB.expedientes.length) {
+    list.innerHTML = '';
+    empty.classList.add('show');
+    return;
+  }
+  empty.classList.remove('show');
+  var stClass = {activo:'st-a', tramite:'st-t', cerrado:'st-c'};
+  var stLabel = {activo:'Activo', tramite:'En trámite', cerrado:'Cerrado'};
+  var html = '';
+  for (var i = 0; i < DB.expedientes.length; i++) {
+    var e = DB.expedientes[i];
+    var fechaLbl = e.fecha ? new Date(e.fecha + 'T12:00:00').toLocaleDateString('es-AR') : 'Sin fecha';
+    html += '<div class="exp-card" data-estado="' + e.estado + '" data-fuero="' + e.fuero + '">';
+    html += '<div class="exp-hdr"><div class="exp-car">' + e.caratula + '</div><div class="exp-st ' + stClass[e.estado] + '">' + stLabel[e.estado] + '</div></div>';
+    html += '<div class="exp-meta">';
+    html += '<div class="em"><strong>Número</strong>' + (e.numero || '—') + '</div>';
+    html += '<div class="em"><strong>Juzgado</strong>' + (e.juzgado || '—') + '</div>';
+    html += '<div class="em"><strong>Fecha</strong>' + fechaLbl + '</div>';
+    html += '<div class="em"><strong>Fuero</strong>' + (e.fuero.charAt(0).toUpperCase() + e.fuero.slice(1)) + '</div>';
+    html += '</div></div>';
+  }
+  list.innerHTML = html;
+}
+
+function openExpModal() {
+  document.getElementById('ef-caratula').value = '';
+  document.getElementById('ef-numero').value = '';
+  document.getElementById('ef-juzgado').value = '';
+  document.getElementById('ef-fecha').value = '';
+  document.getElementById('expModal').classList.add('show');
+}
+
+function submitExp() {
+  var caratula = document.getElementById('ef-caratula').value.trim();
+  if (!caratula) { showToast('⚠️ Escribí la carátula del expediente'); return; }
+  var e = {
+    id: uid(),
+    caratula: caratula,
+    numero: document.getElementById('ef-numero').value.trim(),
+    juzgado: document.getElementById('ef-juzgado').value.trim(),
+    fuero: document.getElementById('ef-fuero').value,
+    estado: document.getElementById('ef-estado').value,
+    fecha: document.getElementById('ef-fecha').value
+  };
+  DB.expedientes.push(e);
+  saveDB();
+  closeModal('expModal');
+  renderExpedientes();
+  renderDashboard();
+  renderInformes();
+  showToast('✅ Expediente agregado');
+}
+
+// ── RENDER: HONORARIOS ──
+function renderHonorarios() {
+  var list = document.getElementById('honList');
+  var empty = document.getElementById('honEmpty');
+  if (!list) return;
+  var totalCobrado = 0, totalPendiente = 0, totalVencido = 0;
+  for (var i = 0; i < DB.honorarios.length; i++) {
+    var h = DB.honorarios[i];
+    if (h.estado === 'cobrado') totalCobrado += Number(h.monto);
+    else if (h.estado === 'vencido') totalVencido += Number(h.monto);
+    else totalPendiente += Number(h.monto);
+  }
+  var total = totalCobrado + totalPendiente + totalVencido;
+  var sumEl = document.getElementById('honSummary');
+  if (sumEl) {
+    sumEl.querySelector('.hon-total').textContent = fmtMoney(total);
+    var vals = sumEl.querySelectorAll('.hon-val');
+    vals[0].textContent = fmtMoney(totalCobrado);
+    vals[1].textContent = fmtMoney(totalPendiente);
+    vals[2].textContent = fmtMoney(totalVencido);
+  }
+  if (!DB.honorarios.length) {
+    list.innerHTML = '';
+    empty.classList.add('show');
+    return;
+  }
+  empty.classList.remove('show');
+  var dotColor = {pendiente:'var(--warning)', vencido:'var(--danger)', cobrado:'var(--success)'};
+  var vencLabel = {pendiente:'Pendiente', vencido:'Vencido ⚠', cobrado:'Cobrado ✓'};
+  var vencClass = {pendiente:'cwarn', vencido:'cdanger', cobrado:'cup'};
+  var html = '';
+  for (var j = 0; j < DB.honorarios.length; j++) {
+    var h2 = DB.honorarios[j];
+    var fechaLbl = h2.vencimiento ? new Date(h2.vencimiento + 'T12:00:00').toLocaleDateString('es-AR') : '—';
+    html += '<div class="hon-row">';
+    html += '<div class="hon-top"><div class="hon-dot" style="background:' + dotColor[h2.estado] + '"></div>';
+    html += '<div class="hon-info"><div class="hon-client">' + h2.cliente + '</div><div class="hon-concept">' + (h2.concepto||'Sin concepto') + '</div></div>';
+    html += '<div class="hon-right"><div class="hon-amount">' + fmtMoney(h2.monto) + '</div><div class="hon-venc ' + vencClass[h2.estado] + '">' + (h2.estado==='cobrado'?vencLabel[h2.estado]:'Vence ' + fechaLbl) + '</div></div></div>';
+    html += '<div class="hon-btns"><button class="hon-wa" onclick="waHon(\'' + h2.cliente.replace(/'/g,"\\'") + '\',\'' + fmtMoney(h2.monto) + '\',\'' + (h2.concepto||'').replace(/'/g,"\\'") + '\',\'' + fechaLbl + '\',\'' + h2.estado + '\')">📱 WhatsApp</button></div>';
+    html += '</div>';
+  }
+  list.innerHTML = html;
+}
+
+function openHonModal() {
+  document.getElementById('hf-cliente').value = '';
+  document.getElementById('hf-concepto').value = '';
+  document.getElementById('hf-monto').value = '';
+  document.getElementById('hf-vencimiento').value = '';
+  document.getElementById('honModal').classList.add('show');
+}
+
+function submitHon() {
+  var cliente = document.getElementById('hf-cliente').value.trim();
+  var monto = document.getElementById('hf-monto').value;
+  if (!cliente) { showToast('⚠️ Escribí el nombre del cliente'); return; }
+  if (!monto) { showToast('⚠️ Ingresá el monto'); return; }
+  var h = {
+    id: uid(),
+    cliente: cliente,
+    concepto: document.getElementById('hf-concepto').value.trim(),
+    monto: Number(monto),
+    estado: document.getElementById('hf-estado').value,
+    vencimiento: document.getElementById('hf-vencimiento').value
+  };
+  DB.honorarios.push(h);
+  saveDB();
+  closeModal('honModal');
+  renderHonorarios();
+  renderDashboard();
+  renderInformes();
+  showToast('✅ Honorario agregado');
+}
+
+// ── RENDER: TAREAS ──
+function renderTareas() {
+  var list = document.getElementById('taskList');
+  var empty = document.getElementById('taskEmpty');
+  if (!list) return;
+  var visible = DB.tareas;
+  if (currentUser !== 'karina') {
+    visible = DB.tareas.filter(function(t) { return t.asignado === currentUser; });
+  } else if (currentTaskFilter && currentTaskFilter !== 'todas') {
+    visible = DB.tareas.filter(function(t) { return t.asignado === currentTaskFilter; });
+  }
+  if (!visible.length) {
+    list.innerHTML = '';
+    empty.classList.add('show');
+    return;
+  }
+  empty.classList.remove('show');
+  var prioClass = {alta:'p-alta', media:'p-media', normal:'p-baja'};
+  var prioLabel = {alta:'Urgente', media:'Media', normal:'Normal'};
+  var dotColors = {karina:'var(--gold)', yani:'#5DADE2', mili:'#BB8FCE', josefina:'#58D68D'};
+  var statusClass = {sinver:'ts-sinver', proceso:'ts-proceso', final:'ts-final'};
+  var statusLabel = {sinver:'⏺ Sin ver', proceso:'🔄 En proceso', final:'✅ Finalizada'};
+  var html = '';
+  for (var i = 0; i < visible.length; i++) {
+    var t = visible[i];
+    var u = USERS[t.asignado];
+    var dateLbl = t.fecha ? new Date(t.fecha + 'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}) : 'Sin fecha';
+    html += '<div class="task-card" data-id="' + t.id + '" data-assignee="' + t.asignado + '">';
+    html += '<div class="task-top"><div class="chk' + (t.completada?' done':'') + '" onclick="toggleTask(this,\'' + t.id + '\')">' + (t.completada?'✓':'') + '</div>';
+    html += '<div class="task-body"><div class="task-title' + (t.completada?' crossed':'') + '">' + t.titulo + '</div>';
+    if (t.desc) html += '<div class="task-desc">' + t.desc + '</div>';
+    html += '</div><div class="prio ' + prioClass[t.prioridad] + '">' + prioLabel[t.prioridad] + '</div></div>';
+    html += '<div class="task-bot"><div class="chip"><div class="chip-av" style="background:' + u.bg + ';color:#0D0D0D">' + u.ini + '</div><span class="chip-name">' + u.name + '</span></div>';
+    html += '<div style="display:flex;align-items:center;gap:5px"><span class="tdate">' + dateLbl + '</span>';
+    html += '<div class="tstatus ' + statusClass[t.estado] + '" onclick="cycleStatus(this,\'' + t.id + '\')">' + statusLabel[t.estado] + '</div></div></div>';
+    if (t.files && t.files.length) html += '<div class="file-zone">' + t.files + '</div>';
+    html += '</div>';
+  }
+  list.innerHTML = html;
+}
+
+var currentTaskFilter = 'todas';
+
+// ── RENDER: NOVEDADES ──
+function renderNovedades() {
+  var list = document.getElementById('novList');
+  var empty = document.getElementById('novEmpty');
+  if (!list) return;
+  if (!DB.novedades.length) {
+    list.innerHTML = '';
+    empty.classList.add('show');
+    return;
+  }
+  empty.classList.remove('show');
+  var html = '';
+  for (var i = 0; i < DB.novedades.length; i++) {
+    var n = DB.novedades[i];
+    var badgeClass = n.portal === 'cordoba' ? 'badge-blue' : 'badge-gold';
+    var badgeLabel = n.portal === 'cordoba' ? 'Córdoba' : 'Nación';
+    var fechaLbl = new Date(n.fecha).toLocaleDateString('es-AR') + ' ' + new Date(n.fecha).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+    html += '<div class="nov-card' + (n.vista?' vista':' nueva') + '" data-portal="' + n.portal + '">';
+    html += '<div class="nov-hdr"><div><div class="nov-exp">' + n.exp + '</div><div class="nov-tipo">📋 ' + (n.tipo||'Movimiento') + '</div><div class="nov-juz">' + (n.juzgado||'—') + '</div></div><div class="badge ' + badgeClass + '">' + badgeLabel + '</div></div>';
+    if (n.texto) html += '<div class="nov-txt">"' + n.texto + '"</div>';
+    html += '<div class="nov-foot"><span class="nov-time">⏱ ' + fechaLbl + (n.vista?' · Vista':'') + '</span><div class="nov-btns">';
+    if (!n.vista) html += '<div class="nov-btn" onclick="marcarVistaDB(\'' + n.id + '\',this)">✓ Vista</div>';
+    html += '<button class="nov-wa" onclick="waJud(\'' + n.exp.replace(/'/g,"\\'") + '\',\'' + (n.tipo||'').replace(/'/g,"\\'") + '\',\'' + (n.juzgado||'').replace(/'/g,"\\'") + '\',\'' + fechaLbl + '\')">📱 WA</button>';
+    html += '</div></div></div>';
+  }
+  list.innerHTML = html;
+}
+
+function openNovModal() {
+  document.getElementById('nf-exp').value = '';
+  document.getElementById('nf-tipo').value = '';
+  document.getElementById('nf-juzgado').value = '';
+  document.getElementById('nf-texto').value = '';
+  document.getElementById('novModal').classList.add('show');
+}
+
+function submitNov() {
+  var exp = document.getElementById('nf-exp').value.trim();
+  if (!exp) { showToast('⚠️ Escribí el expediente'); return; }
+  var n = {
+    id: uid(),
+    exp: exp,
+    tipo: document.getElementById('nf-tipo').value.trim(),
+    juzgado: document.getElementById('nf-juzgado').value.trim(),
+    portal: document.getElementById('nf-portal').value,
+    texto: document.getElementById('nf-texto').value.trim(),
+    fecha: new Date().toISOString(),
+    vista: false
+  };
+  DB.novedades.push(n);
+  saveDB();
+  closeModal('novModal');
+  renderNovedades();
+  showToast('✅ Novedad agregada');
+}
+
+function marcarVistaDB(id, el) {
+  for (var i = 0; i < DB.novedades.length; i++) {
+    if (DB.novedades[i].id === id) { DB.novedades[i].vista = true; break; }
+  }
+  saveDB();
+  renderNovedades();
+}
+
+// ── RENDER: DASHBOARD ──
+function renderDashboard() {
+  var sc = document.getElementById('statClientes');
+  var se = document.getElementById('statExp');
+  var sh = document.getElementById('statHon');
+  var st = document.getElementById('statTareas');
+  if (sc) sc.textContent = DB.clientes.length;
+  if (se) se.textContent = DB.expedientes.length;
+  if (st) {
+    var pendientes = DB.tareas.filter(function(t){return !t.completada;}).length;
+    st.textContent = pendientes;
+  }
+  if (sh) {
+    var pend = 0;
+    for (var i = 0; i < DB.honorarios.length; i++) {
+      if (DB.honorarios[i].estado !== 'cobrado') pend += Number(DB.honorarios[i].monto);
+    }
+    sh.textContent = fmtMoney(pend);
+  }
+
+  // Alerts: vencimientos próximos en expedientes y honorarios
+  var alertsEl = document.getElementById('dashAlerts');
+  var alertsEmpty = document.getElementById('dashAlertsEmpty');
+  if (alertsEl) {
+    var alerts = buildAutoAlerts();
+    if (!alerts.length) { alertsEl.innerHTML=''; alertsEmpty.classList.add('show'); }
+    else {
+      alertsEmpty.classList.remove('show');
+      var ah = '';
+      for (var j = 0; j < Math.min(alerts.length,3); j++) {
+        var a = alerts[j];
+        ah += '<div class="card alert-card ' + a.cls + '"><div class="card-row"><div class="adot"></div><div class="card-body"><div class="card-title">' + a.title + '</div><div class="card-sub">' + a.sub + '</div></div><div class="card-time">' + a.time + '</div></div></div>';
+      }
+      alertsEl.innerHTML = ah;
+    }
+  }
+
+  // Events: expedientes con fecha próxima
+  var evEl = document.getElementById('dashEvents');
+  var evEmpty = document.getElementById('dashEventsEmpty');
+  if (evEl) {
+    var withDate = DB.expedientes.filter(function(e){return e.fecha;}).sort(function(a,b){return a.fecha.localeCompare(b.fecha);});
+    if (!withDate.length) { evEl.innerHTML=''; evEmpty.classList.add('show'); }
+    else {
+      evEmpty.classList.remove('show');
+      var eh = '';
+      var meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      for (var k = 0; k < Math.min(withDate.length,5); k++) {
+        var ex = withDate[k];
+        var d = new Date(ex.fecha + 'T12:00:00');
+        eh += '<div class="ev-row"><div class="edate"><div class="eday">' + d.getDate() + '</div><div class="emon">' + meses[d.getMonth()] + '</div></div><div class="ev-info"><div class="ev-title">' + ex.caratula + '</div><div class="ev-meta">' + (ex.juzgado||'') + '</div></div><div class="badge badge-blue">' + ex.fuero + '</div></div>';
+      }
+      evEl.innerHTML = eh;
+    }
+  }
+}
+
+function buildAutoAlerts() {
+  var alerts = [];
+  var today = new Date(); today.setHours(0,0,0,0);
+  for (var i = 0; i < DB.expedientes.length; i++) {
+    var e = DB.expedientes[i];
+    if (!e.fecha) continue;
+    var d = new Date(e.fecha + 'T12:00:00'); d.setHours(0,0,0,0);
+    var diff = Math.round((d - today) / 86400000);
+    if (diff <= 0 && diff >= -2) alerts.push({cls:'danger', title:'Vencimiento — ' + e.caratula, sub:(e.juzgado||'')+' · '+(e.numero||''), time: diff===0?'Hoy':'Venció', tipo:'crit'});
+    else if (diff === 1) alerts.push({cls:'warn', title:'Audiencia/vencimiento mañana — ' + e.caratula, sub:(e.juzgado||''), time:'Mañana', tipo:'warn'});
+  }
+  for (var j = 0; j < DB.honorarios.length; j++) {
+    var h = DB.honorarios[j];
+    if (h.estado === 'vencido') alerts.push({cls:'warn', title:'Honorario vencido — ' + h.cliente, sub: fmtMoney(h.monto) + ' sin cobrar', time:'Vencido', tipo:'warn'});
+  }
+  for (var k = 0; k < DB.tareas.length; k++) {
+    var t = DB.tareas[k];
+    if (t.prioridad === 'alta' && t.estado === 'sinver') alerts.push({cls:'danger', title:'Tarea urgente sin ver — ' + USERS[t.asignado].name, sub: '"' + t.titulo + '"', time:'Urgente', tipo:'crit'});
+  }
+  return alerts;
+}
+
+// ── RENDER: ALERTAS (pantalla completa) ──
+function renderAlertasScreen() {
+  var list = document.getElementById('alertasList');
+  var empty = document.getElementById('alertasEmpty');
+  if (!list) return;
+  var alerts = buildAutoAlerts();
+  if (!alerts.length) { list.innerHTML=''; empty.classList.add('show'); return; }
+  empty.classList.remove('show');
+  var icons = {crit:'🔴', warn:'🟡', info:'🔵'};
+  var html = '';
+  for (var i = 0; i < alerts.length; i++) {
+    var a = alerts[i];
+    html += '<div class="aa ' + a.tipo + '" data-tipo="' + a.tipo + '"><div class="aa-icon">' + icons[a.tipo] + '</div><div class="aa-body"><div class="aa-title">' + a.title + '</div><div class="aa-sub">' + a.sub + '</div><div class="aa-time">⏱ ' + a.time + '</div></div></div>';
+  }
+  list.innerHTML = html;
+}
+
+// ── RENDER: INFORMES ──
+function renderInformes() {
+  var cobrado=0, pendiente=0, vencido=0;
+  for (var i=0;i<DB.honorarios.length;i++){
+    var h = DB.honorarios[i];
+    if (h.estado==='cobrado') cobrado+=Number(h.monto);
+    else if (h.estado==='vencido') vencido+=Number(h.monto);
+    else pendiente+=Number(h.monto);
+  }
+  var elC=document.getElementById('infCobrado'); if(elC) elC.textContent=fmtMoney(cobrado);
+  var elP=document.getElementById('infPendiente'); if(elP) elP.textContent=fmtMoney(pendiente);
+  var elV=document.getElementById('infVencido'); if(elV) elV.textContent=fmtMoney(vencido);
+  var elT=document.getElementById('infTotal'); if(elT) elT.textContent=fmtMoney(cobrado+pendiente+vencido);
+
+  var ea=document.getElementById('infExpActivo'), et=document.getElementById('infExpTramite'), ec=document.getElementById('infExpCerrado'), eTot=document.getElementById('infExpTotal');
+  var ca=0,ct=0,cc=0;
+  for (var j=0;j<DB.expedientes.length;j++){
+    var st = DB.expedientes[j].estado;
+    if(st==='activo')ca++; else if(st==='tramite')ct++; else cc++;
+  }
+  if(ea)ea.textContent=ca; if(et)et.textContent=ct; if(ec)ec.textContent=cc; if(eTot)eTot.textContent=DB.expedientes.length;
+
+  var eqEl = document.getElementById('infEquipo');
+  var eqEmpty = document.getElementById('infEquipoEmpty');
+  if (eqEl) {
+    var emps = ['yani','mili','josefina'];
+    var any = false;
+    var html = '';
+    for (var k=0;k<emps.length;k++) {
+      var uid_ = emps[k];
+      var userTasks = DB.tareas.filter(function(t){return t.asignado===uid_;});
+      if (!userTasks.length) continue;
+      any = true;
+      var done = userTasks.filter(function(t){return t.completada;}).length;
+      var pct = Math.round((done/userTasks.length)*100);
+      var u = USERS[uid_];
+      html += '<div class="prog-row"><div class="prog-hdr"><span class="prog-name">' + u.name + '</span><span class="prog-val ' + (pct>=50?'cup':'cwarn') + '">' + done + '/' + userTasks.length + ' completadas</span></div><div class="prog-bar"><div class="prog-fill" style="width:' + pct + '%;background:' + (pct>=50?'var(--success)':'var(--warning)') + '"></div></div></div>';
+    }
+    if (any) { eqEl.innerHTML = html; eqEmpty.classList.remove('show'); }
+    else { eqEl.innerHTML=''; eqEmpty.classList.add('show'); }
+  }
+}
+
+// ── RENDER: EQUIPO ──
+function renderEquipo() {
+  var el = document.getElementById('teamList');
+  if (!el) return;
+  var emps = ['yani','mili','josefina'];
+  var html = '';
+  for (var i=0;i<emps.length;i++) {
+    var uid_ = emps[i];
+    var u = USERS[uid_];
+    var userTasks = DB.tareas.filter(function(t){return t.asignado===uid_;});
+    var done = userTasks.filter(function(t){return t.completada;}).length;
+    var pend = userTasks.length - done;
+    html += '<div class="team-card"><div class="team-top"><div class="team-av" style="background:' + u.bg + ';color:#0D0D0D">' + u.ini + '</div><div><div class="team-name">' + u.name + '</div><div class="team-role">Colaboradora</div></div></div>';
+    html += '<div class="team-stats"><div class="ts"><div class="ts-val">' + userTasks.length + '</div><div class="ts-lbl">Asignadas</div></div><div class="ts"><div class="ts-val cwarn">' + pend + '</div><div class="ts-lbl">Pendientes</div></div><div class="ts"><div class="ts-val cup">' + done + '</div><div class="ts-lbl">Completadas</div></div></div></div>';
+  }
+  el.innerHTML = html;
+}
+
+// ── RENDER ALL ──
+function renderAll() {
+  renderClients();
+  renderExpedientes();
+  renderHonorarios();
+  renderTareas();
+  renderNovedades();
+  renderDashboard();
+  renderAlertasScreen();
+  renderInformes();
+  renderEquipo();
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+function startApp(uid) {
+  currentUser = uid;
+  var u = USERS[uid];
+  document.getElementById('loginScreen').style.display = 'none';
+  var shell = document.getElementById('appShell');
+  shell.style.display = 'flex';
+  shell.style.flexDirection = 'column';
+  shell.style.flex = '1';
+
+  var pa = document.getElementById('pillAv');
+  pa.style.background = u.bg;
+  pa.style.color = '#0D0D0D';
+  pa.textContent = u.ini;
+  document.getElementById('pillName').textContent = u.name;
+  document.getElementById('greetName').textContent = u.name;
+
+  var dateEl = document.getElementById('greetDate');
+  if (dateEl) {
+    var days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    var now = new Date();
+    dateEl.textContent = days[now.getDay()] + ' · ' + now.getDate() + ' de ' + months[now.getMonth()] + ', ' + now.getFullYear();
+  }
+
+  var nav = u.role === 'admin' ? NAV_ADMIN : NAV_EMP;
+  var navHtml = '';
+  for (var i = 0; i < nav.length; i++) {
+    navHtml += '<div class="ni" onclick="goNav(\'' + nav[i].id + '\')">';
+    navHtml += '<div class="ni-icon">' + nav[i].icon + '</div>';
+    navHtml += '<div class="ni-lbl">' + nav[i].lbl + '</div></div>';
+  }
+  document.getElementById('bnav').innerHTML = navHtml;
+
+  document.getElementById('dashStats').style.display = u.role === 'admin' ? 'block' : 'none';
+
+  if (u.role !== 'admin') {
+    document.getElementById('tareasTitle').textContent = 'Mis tareas';
+    document.getElementById('tareasFilter').style.display = 'none';
+  } else {
+    document.getElementById('tareasTitle').textContent = 'Tareas del equipo';
+    document.getElementById('tareasFilter').style.display = 'flex';
+  }
+  currentTaskFilter = 'todas';
+
+  buildContacts();
+  renderAll();
+  goNav('dashboard');
+}
+
+function doLogout() {
+  currentUser = null;
+  pendingUser = null;
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('step1').style.display = 'block';
+  document.getElementById('step2').style.display = 'none';
+}
+
+function goNav(id) {
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+  var s = document.getElementById('screen-' + id);
+  if (s) s.classList.add('active');
+  var items = document.querySelectorAll('.ni');
+  for (var j = 0; j < items.length; j++) {
+    var oc = items[j].getAttribute('onclick');
+    items[j].classList.toggle('on', oc === "goNav('" + id + "')");
+  }
+  var c = document.querySelector('.content');
+  if (c) c.scrollTop = 0;
+  if (id === 'chat') buildContacts();
+  if (id === 'honorarios' && currentUser !== 'karina') {
+    document.getElementById('honContent').innerHTML = '<div class="access-denied"><div class="ad-icon">🔒</div><div class="ad-title">Sección restringida</div><div class="ad-sub">Los honorarios son de acceso exclusivo de Karina.</div></div>';
+  }
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  document.getElementById('themeBtn').textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+
+function filterClients(q) {
+  var ql = q.toLowerCase();
+  var rows = document.querySelectorAll('#clientList .client-row');
+  for (var i = 0; i < rows.length; i++) {
+    var txt = rows[i].textContent.toLowerCase();
+    rows[i].style.display = (!q || txt.indexOf(ql) > -1) ? 'flex' : 'none';
+  }
+}
+
+function filterExp(f, btn) {
+  var cards = document.querySelectorAll('#expList .exp-card');
+  for (var i = 0; i < cards.length; i++) {
+    var show = f === 'todos' || cards[i].dataset.estado === f || cards[i].dataset.fuero === f;
+    cards[i].style.display = show ? 'block' : 'none';
+  }
+  var pills = document.querySelectorAll('#screen-expedientes .fpill');
+  for (var j = 0; j < pills.length; j++) pills[j].classList.remove('on');
+  if (btn) btn.classList.add('on');
+}
+
+function filterTasks(who, btn) {
+  currentTaskFilter = who;
+  if (btn) {
+    var pills = document.querySelectorAll('#tareasFilter .fpill');
+    for (var j = 0; j < pills.length; j++) pills[j].classList.remove('on');
+    btn.classList.add('on');
+  }
+  renderTareas();
+}
+
+function toggleTask(el, taskId) {
+  for (var i = 0; i < DB.tareas.length; i++) {
+    if (DB.tareas[i].id === taskId) {
+      DB.tareas[i].completada = !DB.tareas[i].completada;
+      if (DB.tareas[i].completada) DB.tareas[i].estado = 'final';
+      break;
+    }
+  }
+  saveDB();
+  renderTareas();
+  renderDashboard();
+  renderInformes();
+  renderEquipo();
+}
+
+function cycleStatus(el, taskId) {
+  var order = ['sinver', 'proceso', 'final'];
+  for (var i = 0; i < DB.tareas.length; i++) {
+    if (DB.tareas[i].id === taskId) {
+      var t = DB.tareas[i];
+      var cur = order.indexOf(t.estado);
+      var next = order[(cur + 1) % 3];
+      t.estado = next;
+      t.completada = (next === 'final');
+      if (next === 'final' && currentUser !== 'karina') {
+        showToast('✅ Marcaste como finalizada: ' + t.titulo.substring(0, 28));
+      }
+      break;
+    }
+  }
+  saveDB();
+  renderTareas();
+  renderDashboard();
+  renderInformes();
+  renderEquipo();
+}
+
+function filterDocType(type, btn) {
+  var rows = document.querySelectorAll('#docsContainer .doc-row');
+  for (var i = 0; i < rows.length; i++) {
+    rows[i].style.display = (type === 'todos' || rows[i].dataset.type === type) ? 'flex' : 'none';
+  }
+  var pills = document.querySelectorAll('#screen-documentos .fpill');
+  for (var j = 0; j < pills.length; j++) pills[j].classList.remove('on');
+  if (btn) btn.classList.add('on');
+}
+
+function filterDocs(q) {
+  var ql = q.toLowerCase();
+  var rows = document.querySelectorAll('#docsContainer .doc-row');
+  for (var i = 0; i < rows.length; i++) {
+    var txt = rows[i].textContent.toLowerCase();
+    rows[i].style.display = (!q || txt.indexOf(ql) > -1) ? 'flex' : 'none';
+  }
+}
+
+function uploadDocs(input) {
+  var files = input.files;
+  if (!files.length) return;
+  var container = document.getElementById('docsContainer');
+  var secTitle = document.createElement('div');
+  secTitle.className = 'doc-sec-title';
+  secTitle.textContent = 'Subidos hoy';
+  container.insertBefore(secTitle, container.firstChild);
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    var ext = f.name.split('.').pop().toLowerCase();
+    var icon = ext === 'pdf' ? '📄' : ['doc','docx'].indexOf(ext) > -1 ? '📝' : ['xls','xlsx'].indexOf(ext) > -1 ? '📊' : '🖼️';
+    var dicClass = ext === 'pdf' ? 'di-pdf' : ['doc','docx'].indexOf(ext) > -1 ? 'di-word' : ['xls','xlsx'].indexOf(ext) > -1 ? 'di-xl' : 'di-img';
+    var type = ext === 'pdf' ? 'pdf' : ['doc','docx'].indexOf(ext) > -1 ? 'word' : ['xls','xlsx'].indexOf(ext) > -1 ? 'excel' : 'img';
+    var row = document.createElement('div');
+    row.className = 'doc-row';
+    row.dataset.type = type;
+    var url = URL.createObjectURL(f);
+    row.innerHTML = '<div class="dic ' + dicClass + '">' + icon + '</div><div class="doc-info"><div class="doc-name">' + f.name + '</div><div class="doc-meta">Subido ahora</div></div><span class="doc-size">' + Math.round(f.size/1024) + ' KB</span>';
+    row.onclick = (function(name, u) { return function() { openPdf(name, u); }; })(f.name, url);
+    container.insertBefore(row, secTitle.nextSibling);
+  }
+  showToast('📂 ' + files.length + ' archivo(s) subido(s)');
+  input.value = '';
+}
+
+function attachFile(input, zone) {
+  var files = input.files;
+  if (!files.length) return;
+  var lbl = zone.querySelector('label.upload-lbl');
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    var ext = f.name.split('.').pop().toLowerCase();
+    var icon = ext === 'pdf' ? '📄' : ['doc','docx'].indexOf(ext) > -1 ? '📝' : ['xls','xlsx'].indexOf(ext) > -1 ? '📊' : '🖼️';
+    var cls = ext === 'pdf' ? 'fc-pdf' : ['doc','docx'].indexOf(ext) > -1 ? 'fc-word' : ['xls','xlsx'].indexOf(ext) > -1 ? 'fc-excel' : 'fc-img';
+    var chip = document.createElement('span');
+    chip.className = 'fchip ' + cls;
+    chip.textContent = icon + ' ' + f.name;
+    var url = URL.createObjectURL(f);
+    chip.onclick = (function(name, u) { return function() { openPdf(name, u); }; })(f.name, url);
+    zone.insertBefore(chip, lbl);
+  }
+  showToast('📎 ' + files.length + ' archivo(s) adjuntado(s)');
+  input.value = '';
+}
+
+function filterNov(portal, btn) {
+  var cards = document.querySelectorAll('#screen-novedades .nov-card');
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].style.display = (portal === 'todas' || cards[i].dataset.portal === portal) ? 'block' : 'none';
+  }
+  var tabs = document.querySelectorAll('#screen-novedades .ptab');
+  for (var j = 0; j < tabs.length; j++) tabs[j].classList.remove('on');
+  if (btn) btn.classList.add('on');
+}
+
+function marcarVista(btn) {
+  var card = btn.closest('.nov-card');
+  card.classList.remove('nueva');
+  card.classList.add('vista');
+  btn.textContent = '✓ Vista';
+  btn.style.color = 'var(--success)';
+  btn.style.borderColor = 'var(--success)';
+  btn.onclick = null;
+}
+
+function filterAlertas(tipo, btn) {
+  var items = document.querySelectorAll('#screen-alertas .aa');
+  for (var i = 0; i < items.length; i++) {
+    items[i].style.display = (tipo === 'todas' || items[i].dataset.tipo === tipo) ? 'flex' : 'none';
+  }
+  var pills = document.querySelectorAll('#screen-alertas .fpill');
+  for (var j = 0; j < pills.length; j++) pills[j].classList.remove('on');
+  if (btn) btn.classList.add('on');
+}
+
+function openTaskModal() {
+  selAssignee = null; selPrio = null;
+  document.getElementById('tf-titulo').value = '';
+  document.getElementById('tf-desc').value = '';
+  document.getElementById('tf-fecha').value = '';
+  document.getElementById('tf-files').innerHTML = '';
+  var aopts = document.querySelectorAll('.aopt');
+  for (var i = 0; i < aopts.length; i++) aopts[i].classList.remove('on');
+  var popts = document.querySelectorAll('.popt');
+  for (var j = 0; j < popts.length; j++) popts[j].className = 'popt';
+  document.getElementById('taskModal').classList.add('show');
+}
+
+function closeTaskModal() { document.getElementById('taskModal').classList.remove('show'); }
+
+function selA(el) {
+  var aopts = document.querySelectorAll('.aopt');
+  for (var i = 0; i < aopts.length; i++) aopts[i].classList.remove('on');
+  el.classList.add('on');
+  selAssignee = el.dataset.uid;
+}
+
+function selP(el) {
+  var popts = document.querySelectorAll('.popt');
+  for (var i = 0; i < popts.length; i++) popts[i].className = 'popt';
+  selPrio = el.dataset.p;
+  el.classList.add('on-' + (selPrio === 'alta' ? 'a' : selPrio === 'media' ? 'm' : 'n'));
+}
+
+function setTaskFiles(input) {
+  var files = input.files;
+  var preview = document.getElementById('tf-files');
+  preview.innerHTML = '';
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    var ext = f.name.split('.').pop().toLowerCase();
+    var icon = ext === 'pdf' ? '📄' : ['doc','docx'].indexOf(ext) > -1 ? '📝' : ['xls','xlsx'].indexOf(ext) > -1 ? '📊' : '🖼️';
+    var cls = ext === 'pdf' ? 'fc-pdf' : ['doc','docx'].indexOf(ext) > -1 ? 'fc-word' : ['xls','xlsx'].indexOf(ext) > -1 ? 'fc-excel' : 'fc-img';
+    var chip = document.createElement('span');
+    chip.className = 'fchip ' + cls;
+    chip.textContent = icon + ' ' + f.name;
+    preview.appendChild(chip);
+  }
+}
+
+function submitTask() {
+  var title = document.getElementById('tf-titulo').value.trim();
+  if (!title) { showToast('⚠️ Escribí el título'); return; }
+  if (!selAssignee) { showToast('⚠️ Seleccioná a quién asignar'); return; }
+  if (!selPrio) { showToast('⚠️ Elegí una prioridad'); return; }
+  var u = USERS[selAssignee];
+  var desc = document.getElementById('tf-desc').value.trim();
+  var fecha = document.getElementById('tf-fecha').value;
+  var filesHtml = document.getElementById('tf-files').innerHTML;
+
+  var t = {
+    id: uid(),
+    titulo: title,
+    desc: desc,
+    asignado: selAssignee,
+    prioridad: selPrio,
+    fecha: fecha,
+    estado: 'sinver',
+    completada: false,
+    files: filesHtml
+  };
+  DB.tareas.push(t);
+  saveDB();
+  closeTaskModal();
+  renderTareas();
+  renderDashboard();
+  renderInformes();
+  renderEquipo();
+  showToast('📨 Tarea enviada a ' + u.name);
+}
+
+function buildContacts() {
+  if (!currentUser) return;
+  var contacts = CHATS[currentUser] || [];
+  var list = document.getElementById('contactList');
+  if (!list) return;
+  var html = '';
+  for (var i = 0; i < contacts.length; i++) {
+    var c = contacts[i];
+    html += '<div class="contact-row" onclick="openChat(\'' + c.uid + '\')">';
+    html += '<div class="conv-av" style="background:' + c.bg + ';color:#0D0D0D">' + c.ini + '</div>';
+    html += '<div class="conv-info"><div class="conv-name">' + c.name + '</div>';
+    html += '<div class="conv-prev">' + c.prev + '</div></div>';
+    html += '<div class="conv-meta"><div class="conv-time">' + c.time + '</div>';
+    if (c.unread) html += '<div class="conv-unread">' + c.unread + '</div>';
+    html += '</div></div>';
+  }
+  list.innerHTML = html;
+}
+
+function openChat(uid) {
+  var contacts = CHATS[currentUser] || [];
+  var contact = null;
+  for (var i = 0; i < contacts.length; i++) { if (contacts[i].uid === uid) { contact = contacts[i]; break; } }
+  if (!contact) return;
+  activeChatUid = uid;
+  contact.unread = 0;
+  buildContacts();
+  document.getElementById('cwName').textContent = contact.name;
+  var av = document.getElementById('cwAv');
+  av.style.background = contact.bg; av.style.color = '#0D0D0D'; av.textContent = contact.ini;
+  renderMsgs(contact.msgs);
+  document.getElementById('chatWindow').classList.add('show');
+  setTimeout(function() { var m = document.getElementById('messages'); if(m) m.scrollTop = m.scrollHeight; }, 50);
+}
+
+function renderMsgs(msgs) {
+  var me = currentUser;
+  var html = '';
+  for (var i = 0; i < msgs.length; i++) {
+    var m = msgs[i];
+    var mine = m.from === me;
+    html += '<div class="msg ' + (mine ? 'mine' : 'theirs') + '">';
+    html += '<div class="bubble">' + m.text + '</div>';
+    html += '<div class="msg-time">' + m.time + (mine ? ' ✓✓' : '') + '</div></div>';
+  }
+  document.getElementById('messages').innerHTML = html;
+}
+
+function sendMsg() {
+  var inp = document.getElementById('chatInp');
+  var text = inp.value.trim();
+  if (!text || !activeChatUid) return;
+  var contacts = CHATS[currentUser] || [];
+  var contact = null;
+  for (var i = 0; i < contacts.length; i++) { if (contacts[i].uid === activeChatUid) { contact = contacts[i]; break; } }
+  if (!contact) return;
+  var now = new Date();
+  var time = ('0'+now.getHours()).slice(-2) + ':' + ('0'+now.getMinutes()).slice(-2);
+  contact.msgs.push({from: currentUser, text: text, time: time});
+  contact.prev = text;
+  contact.time = time;
+  inp.value = '';
+  renderMsgs(contact.msgs);
+  var msgs = document.getElementById('messages');
+  setTimeout(function() { msgs.scrollTop = msgs.scrollHeight; }, 30);
+  var replies = ['Entendido!','Perfecto, gracias.','Ya lo resuelvo.','Ok, te aviso.','Recibido ✓'];
+  var rep = replies[Math.floor(Math.random() * replies.length)];
+  setTimeout(function() {
+    var rt = ('0'+new Date().getHours()).slice(-2) + ':' + ('0'+new Date().getMinutes()).slice(-2);
+    contact.msgs.push({from: activeChatUid, text: rep, time: rt});
+    renderMsgs(contact.msgs);
+    setTimeout(function() { msgs.scrollTop = msgs.scrollHeight; }, 30);
+    showToast('💬 ' + contact.name + ': ' + rep);
+  }, 1500);
+}
+
+function closeChatWin() { document.getElementById('chatWindow').classList.remove('show'); activeChatUid = null; }
+
+function openNotif() { document.getElementById('notifPanel').classList.add('show'); }
+function closeNotif() { document.getElementById('notifPanel').classList.remove('show'); }
+function markAllRead() {
+  var items = document.querySelectorAll('.notif.unread');
+  for (var i = 0; i < items.length; i++) items[i].classList.remove('unread');
+  document.getElementById('notifDot').style.display = 'none';
+  showToast('✓ Notificaciones leídas');
+}
+
+function openPdf(name, url) {
+  document.getElementById('pdfTitle').textContent = name;
+  var body = document.getElementById('pdfBody');
+  if (url && name.toLowerCase().endsWith('.pdf')) {
+    body.innerHTML = '<iframe src="' + url + '" style="width:100%;height:100%;border:none;border-radius:8px"></iframe>';
+  } else {
+    body.innerHTML = '<div><div class="pdf-ph-icon">📄</div><div class="pdf-ph-text"><b style="color:var(--gold)">' + name + '</b><br><br>En la app real este documento<br>se abre aquí con visor integrado.</div></div>';
+  }
+  document.getElementById('pdfModal').classList.add('show');
+}
+function closePdf() { document.getElementById('pdfModal').classList.remove('show'); }
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+function waCliente(nombre, fuero, exp, tel) {
+  var d = new Date().toLocaleDateString('es-AR');
+  var msg = '━━━━━━━━━━━━━━━━━━\n🏛️ *KARINA ELENA ABOGADOS*\n📋 *FICHA DE CLIENTE*\n━━━━━━━━━━━━━━━━━━\n\n👤 *Nombre:* ' + nombre + '\n⚖️ *Fuero:* ' + fuero + '\n📁 *Expediente:* ' + exp + '\n📱 *Teléfono:* ' + tel + '\n📆 *Fecha:* ' + d + '\n━━━━━━━━━━━━━━━━━━\n📍 Estudio · Río Cuarto, Córdoba';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function waHon(cliente, monto, concepto, venc, estado) {
+  var emojis = {pendiente:'⏳ *PENDIENTE*', vencido:'🔴 *VENCIDO*', cobrado:'✅ *COBRADO*'};
+  var d = new Date().toLocaleDateString('es-AR');
+  var msg = '━━━━━━━━━━━━━━━━━━\n🏛️ *KARINA ELENA ABOGADOS*\n' + (emojis[estado]||'') + '\n━━━━━━━━━━━━━━━━━━\n\n👤 *Cliente:* ' + cliente + '\n📋 *Concepto:* ' + concepto + '\n💰 *Monto:* ' + monto + '\n📅 *Vencimiento:* ' + venc + '\n📆 *Aviso:* ' + d + '\n━━━━━━━━━━━━━━━━━━\n📍 Estudio · Río Cuarto, Córdoba';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function waJud(exp, tipo, juz, hora) {
+  var d = new Date().toLocaleDateString('es-AR');
+  var msg = '━━━━━━━━━━━━━━━━━━\n🏛️ *KARINA ELENA ABOGADOS*\n⚖️ *NOVEDAD JUDICIAL*\n━━━━━━━━━━━━━━━━━━\n\n📁 *Expediente:* ' + exp + '\n📋 *Movimiento:* ' + tipo + '\n🏛️ *Juzgado:* ' + juz + '\n⏱️ *Detectado:* ' + hora + '\n📆 *Notificado:* ' + d + '\n━━━━━━━━━━━━━━━━━━\n📍 Estudio · Río Cuarto, Córdoba';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+</script>
+<script>
+// Show iOS install banner
+var isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+var isStandalone = ('standalone' in navigator) && navigator.standalone;
+if (isIOS && !isStandalone) {
+  setTimeout(function() {
+    var banner = document.getElementById('iosBanner');
+    if (banner) banner.style.display = 'block';
+  }, 3000);
+}
+
+// Service worker se registra solo cuando la app está en un dominio real (no en este visor de prueba)
+if ('serviceWorker' in navigator && window.location.protocol !== 'blob:' && window.location.hostname !== '') {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').catch(function() {
+      // Silenciado: es normal que falle en entornos de prueba
+    });
+  });
+}
+
+// PWA install prompt
+var deferredPrompt;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  var btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'flex';
+});
+
+window.addEventListener('appinstalled', function() {
+  showToast('✅ App instalada correctamente');
+  deferredPrompt = null;
+  var btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'none';
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(result) {
+      if (result.outcome === 'accepted') showToast('✅ Instalando la app...');
+      deferredPrompt = null;
+    });
+  } else {
+    showToast('📱 En iPhone: tocá Compartir → Agregar a pantalla de inicio');
+  }
+}
+</script>
+</body>
+</html>
