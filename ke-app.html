@@ -414,6 +414,21 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
 .ts-val{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text)}
 .ts-lbl{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-top:2px}
 
+/* EDIT/DELETE ACTIONS */
+.item-actions{display:flex;gap:5px;justify-content:flex-end;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.act-btn{font-size:10px;padding:4px 10px;border-radius:7px;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--text2);transition:all .2s;display:inline-flex;align-items:center;gap:4px}
+.act-btn:hover{border-color:var(--gold);color:var(--gold)}
+.act-btn.danger:hover{border-color:var(--danger);color:#E74C3C}
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;display:none;align-items:center;justify-content:center;padding:24px}
+.confirm-overlay.show{display:flex}
+.confirm-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:22px;max-width:340px;width:100%;text-align:center}
+.confirm-icon{font-size:36px;margin-bottom:10px}
+.confirm-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--text);margin-bottom:7px}
+.confirm-sub{font-size:12px;color:var(--text2);margin-bottom:18px;line-height:1.4}
+.confirm-btns{display:flex;gap:8px}
+.confirm-btn{flex:1;padding:11px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card)}
+.confirm-btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
+
 /* EMPTY STATES & ADD BUTTONS */
 .add-row-btn{width:100%;background:var(--card);border:1px dashed var(--gold);border-radius:11px;padding:12px;text-align:center;font-size:12px;font-weight:600;color:var(--gold);cursor:pointer;margin-bottom:12px;transition:all .2s}
 .add-row-btn:hover{background:rgba(201,169,110,.1)}
@@ -429,6 +444,27 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 </style>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCp4E-g24F826werItiw_IzKql6RkYPqho",
+    authDomain: "karina-elena-abogados.firebaseapp.com",
+    projectId: "karina-elena-abogados",
+    storageBucket: "karina-elena-abogados.firebasestorage.app",
+    messagingSenderId: "1063354888011",
+    appId: "1:1063354888011:web:c800fc94003356d33b82ce"
+  };
+
+  const fbApp = initializeApp(firebaseConfig);
+  const db = getFirestore(fbApp);
+
+  // Expose to the global (non-module) scope used by the rest of the app
+  window.__firebase = { db, collection, doc, setDoc, deleteDoc, onSnapshot };
+  window.dispatchEvent(new Event('firebase-ready'));
+</script>
 </head>
 <body>
 <div class="app">
@@ -481,7 +517,7 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
       <span style="cursor:pointer;font-size:12px;color:var(--text3)" onclick="togglePw()">👁</span>
     </div>
     <div id="pwErr" class="pw-error">Contraseña incorrecta. Intentá de nuevo.</div>
-    <div class="pw-hint">Contraseña compartida del estudio</div>
+    <div class="pw-hint" id="pwHint">Contraseña compartida del estudio</div>
     <button class="btn-gold" onclick="doLogin()">Ingresar →</button>
   </div>
 </div>
@@ -495,6 +531,7 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
       <div><div class="hdr-brand">KARINA ELENA</div><div class="hdr-sub">Abogados</div></div>
     </div>
     <div class="hdr-right">
+      <div id="cloudDot" style="width:9px;height:9px;border-radius:50%;background:#E67E22;flex-shrink:0;transition:background .3s" title="Conectando..."></div>
       <div class="ico-btn" id="installBtn" onclick="installApp()" style="display:none" title="Instalar app">⬇️</div>
       <div class="ico-btn" onclick="openNotif()">🔔<span id="notifDot" style="position:absolute;top:2px;right:2px;width:7px;height:7px;background:#C0392B;border-radius:50%;border:1.5px solid var(--bg2)"></span></div>
       <div class="ico-btn" onclick="toggleTheme()" id="themeBtn">☀️</div>
@@ -564,20 +601,11 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
     <!-- CALENDARIO -->
     <section class="screen" id="screen-calendario">
       <div class="eyebrow">Agenda</div><div class="stitle">Calendario Jurídico</div>
-      <div class="cal-hdr"><div class="cal-month">Junio 2026</div><div style="display:flex;gap:5px"><button class="cal-nav-btn">‹</button><button class="cal-nav-btn">›</button></div></div>
-      <div class="cal-grid">
-        <div class="cdlbl">Do</div><div class="cdlbl">Lu</div><div class="cdlbl">Ma</div><div class="cdlbl">Mi</div><div class="cdlbl">Ju</div><div class="cdlbl">Vi</div><div class="cdlbl">Sa</div>
-        <div class="cd other">1</div><div class="cd other">2</div><div class="cd other">3</div><div class="cd other">4</div><div class="cd other">5</div><div class="cd other">6</div><div class="cd other">7</div>
-        <div class="cd other">8</div><div class="cd other">9</div><div class="cd other">10</div><div class="cd other">11</div><div class="cd other">12</div><div class="cd other">13</div><div class="cd other">14</div>
-        <div class="cd today">15</div><div class="cd hev">16</div><div class="cd">17</div><div class="cd hev">18</div><div class="cd">19</div><div class="cd">20</div><div class="cd">21</div>
-        <div class="cd">22</div><div class="cd hev">23</div><div class="cd">24</div><div class="cd">25</div><div class="cd hev">26</div><div class="cd">27</div><div class="cd">28</div>
-        <div class="cd">29</div><div class="cd hev">30</div><div class="cd other">1</div><div class="cd other">2</div><div class="cd other">3</div><div class="cd other">4</div><div class="cd other">5</div>
-      </div>
+      <div class="cal-hdr"><div class="cal-month" id="calMonthLbl">Junio 2026</div><div style="display:flex;gap:5px"><button class="cal-nav-btn" onclick="calNav(-1)">‹</button><button class="cal-nav-btn" onclick="calNav(1)">›</button></div></div>
+      <div class="cal-grid" id="calGrid"></div>
       <div class="divtxt"><span>Eventos del mes</span></div>
-      <div class="ev-row"><div class="edate"><div class="eday">16</div><div class="emon">Jun</div></div><div class="ev-info"><div class="ev-title">Audiencia — Rodríguez vs. Provincia</div><div class="ev-meta">Juzgado Laboral Nº 2 · Río Cuarto · 10:00 hs</div></div><div class="badge badge-blue">Civil</div></div>
-      <div class="ev-row"><div class="edate"><div class="eday">18</div><div class="emon">Jun</div></div><div class="ev-info"><div class="ev-title">Mediación — Fernández</div><div class="ev-meta">Centro de Mediación · Río Cuarto · 14:30 hs</div></div><div class="badge badge-purple">Familia</div></div>
-      <div class="ev-row"><div class="edate"><div class="eday">23</div><div class="emon">Jun</div></div><div class="ev-info"><div class="ev-title">Audiencia — Torres vs. Empresa SA</div><div class="ev-meta">Juzgado Laboral Nº 2 · Río Cuarto · 09:00 hs</div></div><div class="badge badge-green">Laboral</div></div>
-      <div class="ev-row"><div class="edate"><div class="eday">30</div><div class="emon">Jun</div></div><div class="ev-info"><div class="ev-title">Reunión cliente — López, Ana</div><div class="ev-meta">Estudio · Río Cuarto · 11:00 hs</div></div><div class="badge badge-purple">Familia</div></div>
+      <div id="calEventsList"></div>
+      <div id="calEventsEmpty" class="empty-state-sm">No hay eventos este mes. Tocá un día del calendario para agregar uno.</div>
     </section>
 
     <!-- HONORARIOS -->
@@ -725,12 +753,12 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
   <div class="overlay" id="taskModal">
     <div class="modal">
       <div class="mhandle"></div>
-      <div class="mtitle">Nueva tarea</div>
+      <div class="mtitle" id="taskModalTitle">Nueva tarea</div>
       <span class="flabel">Título *</span>
       <input class="finput" id="tf-titulo" placeholder="Ej: Presentar escrito en Exp. 1234/25">
       <span class="flabel">Descripción</span>
       <textarea class="finput" id="tf-desc" placeholder="Instrucciones para la colaboradora..."></textarea>
-      <span class="flabel">Asignar a *</span>
+      <span class="flabel" id="arowLabel">Asignar a (podés elegir varias) *</span>
       <div class="arow" id="arow">
         <div class="aopt" data-uid="yani" onclick="selA(this)"><div style="width:20px;height:20px;border-radius:50%;background:#5DADE2;color:#0D0D0D;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Playfair Display',serif">YA</div>Yani</div>
         <div class="aopt" data-uid="mili" onclick="selA(this)"><div style="width:20px;height:20px;border-radius:50%;background:#BB8FCE;color:#0D0D0D;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Playfair Display',serif">MI</div>Mili</div>
@@ -756,7 +784,7 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
   <div class="overlay" id="clientModal">
     <div class="modal">
       <div class="mhandle"></div>
-      <div class="mtitle">Nuevo cliente</div>
+      <div class="mtitle" id="clientModalTitle">Nuevo cliente</div>
       <span class="flabel">Nombre y apellido *</span>
       <input class="finput" id="cf-nombre" placeholder="Ej: Martín García">
       <span class="flabel">Fuero</span>
@@ -780,7 +808,7 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
   <div class="overlay" id="expModal">
     <div class="modal">
       <div class="mhandle"></div>
-      <div class="mtitle">Nuevo expediente</div>
+      <div class="mtitle" id="expModalTitle">Nuevo expediente</div>
       <span class="flabel">Carátula *</span>
       <input class="finput" id="ef-caratula" placeholder="Ej: García c/ Municipalidad s/ Daños">
       <span class="flabel">Número de expediente</span>
@@ -810,7 +838,7 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
   <div class="overlay" id="honModal">
     <div class="modal">
       <div class="mhandle"></div>
-      <div class="mtitle">Nuevo honorario</div>
+      <div class="mtitle" id="honModalTitle">Nuevo honorario</div>
       <span class="flabel">Cliente *</span>
       <input class="finput" id="hf-cliente" placeholder="Ej: García, Martín">
       <span class="flabel">Concepto</span>
@@ -834,7 +862,7 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
   <div class="overlay" id="novModal">
     <div class="modal">
       <div class="mhandle"></div>
-      <div class="mtitle">Nueva novedad judicial</div>
+      <div class="mtitle" id="novModalTitle">Nueva novedad judicial</div>
       <span class="flabel">Expediente *</span>
       <input class="finput" id="nf-exp" placeholder="Ej: García c/ Municipalidad">
       <span class="flabel">Tipo de movimiento</span>
@@ -850,6 +878,41 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
       <textarea class="finput" id="nf-texto" placeholder="Extracto de la resolución..."></textarea>
       <button class="msubmit" onclick="submitNov()">✅ Guardar novedad</button>
       <button class="mcancel" onclick="closeModal('novModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- NUEVO EVENTO CALENDARIO MODAL -->
+  <div class="overlay" id="eventModal">
+    <div class="modal">
+      <div class="mhandle"></div>
+      <div class="mtitle">Nuevo evento — <span id="evModalDate"></span></div>
+      <span class="flabel">Título *</span>
+      <input class="finput" id="evf-titulo" placeholder="Ej: Audiencia García vs. Municipalidad">
+      <span class="flabel">Detalle / Juzgado</span>
+      <input class="finput" id="evf-detalle" placeholder="Ej: Juzgado Civil Nº 3 · Río Cuarto">
+      <span class="flabel">Hora</span>
+      <input class="finput" id="evf-hora" type="time">
+      <span class="flabel">Fuero</span>
+      <select class="finput" id="evf-fuero">
+        <option value="civil">Civil</option>
+        <option value="laboral">Laboral</option>
+        <option value="familia">Familia</option>
+      </select>
+      <button class="msubmit" onclick="submitEvent()">✅ Guardar evento</button>
+      <button class="mcancel" onclick="closeModal('eventModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- CONFIRMAR BORRADO -->
+  <div class="confirm-overlay" id="confirmModal">
+    <div class="confirm-box">
+      <div class="confirm-icon">🗑️</div>
+      <div class="confirm-title">¿Eliminar este registro?</div>
+      <div class="confirm-sub" id="confirmText">Esta acción no se puede deshacer.</div>
+      <div class="confirm-btns">
+        <div class="confirm-btn" onclick="closeConfirm()">Cancelar</div>
+        <div class="confirm-btn danger" onclick="confirmDelete()">Eliminar</div>
+      </div>
     </div>
   </div>
 
@@ -912,10 +975,11 @@ textarea.finput{resize:none;height:70px;line-height:1.5}
 </div><!-- /app -->
 
 <script>
-var PASS = 'estudio2026';
+var PASS_KARINA = 'Jefa2026';
+var PASS_EMPLEADAS = 'estudio2026';
 var currentUser = null;
 var pendingUser = null;
-var selAssignee = null;
+var selAssignees = [];
 var selPrio = null;
 var activeChatUid = null;
 
@@ -988,6 +1052,7 @@ function selectUser(uid) {
   var roleEl = document.getElementById('selRole');
   roleEl.textContent = u.role === 'admin' ? 'Directora · Acceso total' : 'Colaboradora';
   roleEl.className = 'urole ' + (u.role === 'admin' ? 'role-a' : 'role-e');
+  document.getElementById('pwHint').textContent = uid === 'karina' ? 'Contraseña personal de la directora' : 'Contraseña compartida del equipo';
   document.getElementById('pwInput').value = '';
   document.getElementById('pwErr').style.display = 'none';
   document.getElementById('pwField').style.borderColor = 'var(--border)';
@@ -1007,7 +1072,8 @@ function togglePw() {
 
 function doLogin() {
   var pw = document.getElementById('pwInput').value;
-  if (pw !== PASS) {
+  var correctPass = pendingUser === 'karina' ? PASS_KARINA : PASS_EMPLEADAS;
+  if (pw !== correctPass) {
     document.getElementById('pwErr').style.display = 'block';
     document.getElementById('pwField').style.borderColor = '#E74C3C';
     return;
@@ -1016,25 +1082,99 @@ function doLogin() {
 }
 
 // ════════════════════════════════════════
-// MOTOR DE DATOS — localStorage
+// MOTOR DE DATOS — Firebase (nube) + localStorage (respaldo local)
 // ════════════════════════════════════════
 var DB_KEY = 'ke_abogados_data_v1';
+var FB_DOC_ID = 'estudio'; // documento único en Firestore que guarda todo el estudio
+var fbReady = false;
+var fbSyncing = false; // evita loops: true mientras estamos aplicando datos que vinieron DE Firestore
+var cloudStatus = 'connecting'; // connecting | online | offline
 
-function loadDB() {
+function loadLocalDB() {
   try {
     var raw = localStorage.getItem(DB_KEY);
     if (raw) return JSON.parse(raw);
   } catch (e) {}
-  return { clientes: [], expedientes: [], honorarios: [], tareas: [], novedades: [], docs: [] };
+  return { clientes: [], expedientes: [], honorarios: [], tareas: [], novedades: [], docs: [], eventos: [] };
 }
 
-function saveDB() {
+function saveLocalDB() {
   try { localStorage.setItem(DB_KEY, JSON.stringify(DB)); } catch (e) {}
 }
 
-var DB = loadDB();
+var DB = loadLocalDB();
+if (!DB.eventos) DB.eventos = [];
 
 function uid() { return 'id_' + Date.now() + '_' + Math.floor(Math.random() * 9999); }
+
+// saveDB(): guarda localmente al instante (para que la UI nunca espere)
+// y además sube los datos a Firestore para que se sincronicen con los demás dispositivos.
+function saveDB() {
+  saveLocalDB();
+  pushToCloud();
+}
+
+function pushToCloud() {
+  if (!fbReady || fbSyncing) return; // si justo estamos recibiendo datos de la nube, no los volvemos a mandar
+  if (!window.__firebase) return;
+  var fb = window.__firebase;
+  var ref = fb.doc(fb.collection(fb.db, 'estudios'), FB_DOC_ID);
+  fb.setDoc(ref, DB).then(function() {
+    setCloudStatus('online');
+  }).catch(function(err) {
+    console.log('Error subiendo a la nube:', err);
+    setCloudStatus('offline');
+  });
+}
+
+function setCloudStatus(status) {
+  cloudStatus = status;
+  var dot = document.getElementById('cloudDot');
+  if (dot) {
+    dot.style.background = status === 'online' ? '#27AE60' : status === 'offline' ? '#E74C3C' : '#E67E22';
+    dot.title = status === 'online' ? 'Sincronizado con la nube' : status === 'offline' ? 'Sin conexión — usando datos locales' : 'Conectando...';
+  }
+}
+
+// Escucha cambios en tiempo real desde Firestore. Cuando otra persona (en otro
+// dispositivo) carga o edita algo, esto recibe el cambio automáticamente y
+// actualiza la pantalla, sin que nadie tenga que recargar la página.
+function initCloudSync() {
+  if (!window.__firebase) {
+    setTimeout(initCloudSync, 300);
+    return;
+  }
+  var fb = window.__firebase;
+  var ref = fb.doc(fb.collection(fb.db, 'estudios'), FB_DOC_ID);
+  fb.onSnapshot(ref, function(snap) {
+    fbReady = true;
+    if (snap.exists()) {
+      var cloudData = snap.data();
+      fbSyncing = true;
+      DB.clientes = cloudData.clientes || [];
+      DB.expedientes = cloudData.expedientes || [];
+      DB.honorarios = cloudData.honorarios || [];
+      DB.tareas = cloudData.tareas || [];
+      DB.novedades = cloudData.novedades || [];
+      DB.eventos = cloudData.eventos || [];
+      DB.docs = cloudData.docs || [];
+      saveLocalDB();
+      if (currentUser) renderAll();
+      fbSyncing = false;
+    } else {
+      // primera vez: no existe el documento en la nube todavía, lo creamos con lo que haya local
+      pushToCloud();
+    }
+    setCloudStatus('online');
+  }, function(err) {
+    console.log('Error de sincronización:', err);
+    setCloudStatus('offline');
+  });
+}
+
+window.addEventListener('firebase-ready', initCloudSync);
+// Si el script módulo ya cargó antes de que este se ejecute, intentamos igual
+if (window.__firebase) initCloudSync();
 
 function fmtMoney(n) {
   n = Number(n) || 0;
@@ -1065,40 +1205,65 @@ function renderClients() {
     for (var j = 0; j < DB.expedientes.length; j++) {
       if (DB.expedientes[j].clienteId === c.id) expCount++;
     }
-    html += '<div class="client-row" data-name="' + c.nombre.toLowerCase() + '">';
+    html += '<div class="client-row" style="flex-wrap:wrap" data-name="' + c.nombre.toLowerCase() + '">';
     html += '<div class="cav">' + initialsOf(c.nombre) + '</div>';
     html += '<div class="cinfo"><div class="cname">' + c.nombre + '</div>';
     html += '<div class="cexp">' + expCount + ' expediente(s) · ' + (c.fuero || 'Sin fuero') + '</div></div>';
     if (c.tel) html += '<button class="wa-btn" onclick="waCliente(\'' + c.nombre.replace(/'/g, "\\'") + '\',\'' + (c.fuero||'') + '\',\'—\',\'' + c.tel + '\')">📱 WA</button>';
+    if (currentUser === 'karina') {
+      html += '<div class="item-actions" style="width:100%"><div class="act-btn" onclick="openClientModal(\'' + c.id + '\')">✏️ Editar</div><div class="act-btn danger" onclick="askDelete(\'clientes\',\'' + c.id + '\',\'' + c.nombre.replace(/'/g,"\\'") + '\')">🗑️ Borrar</div></div>';
+    }
     html += '</div>';
   }
   list.innerHTML = html;
 }
 
-function openClientModal() {
-  document.getElementById('cf-nombre').value = '';
-  document.getElementById('cf-tel').value = '';
-  document.getElementById('cf-notas').value = '';
+var editingClientId = null;
+
+function openClientModal(editId) {
+  editingClientId = editId || null;
+  if (editId) {
+    var c = DB.clientes.find(function(x){return x.id===editId;});
+    document.getElementById('cf-nombre').value = c.nombre;
+    document.getElementById('cf-fuero').value = c.fuero;
+    document.getElementById('cf-tel').value = c.tel || '';
+    document.getElementById('cf-notas').value = c.notas || '';
+    document.getElementById('clientModalTitle').textContent = 'Editar cliente';
+  } else {
+    document.getElementById('cf-nombre').value = '';
+    document.getElementById('cf-tel').value = '';
+    document.getElementById('cf-notas').value = '';
+    document.getElementById('clientModalTitle').textContent = 'Nuevo cliente';
+  }
   document.getElementById('clientModal').classList.add('show');
 }
 
 function submitClient() {
   var nombre = document.getElementById('cf-nombre').value.trim();
   if (!nombre) { showToast('⚠️ Escribí el nombre del cliente'); return; }
-  var c = {
-    id: uid(),
-    nombre: nombre,
-    fuero: document.getElementById('cf-fuero').value,
-    tel: document.getElementById('cf-tel').value.trim(),
-    notas: document.getElementById('cf-notas').value.trim(),
-    fecha: new Date().toISOString()
-  };
-  DB.clientes.push(c);
+  if (editingClientId) {
+    var c = DB.clientes.find(function(x){return x.id===editingClientId;});
+    c.nombre = nombre;
+    c.fuero = document.getElementById('cf-fuero').value;
+    c.tel = document.getElementById('cf-tel').value.trim();
+    c.notas = document.getElementById('cf-notas').value.trim();
+    showToast('✅ Cliente actualizado');
+  } else {
+    var nc = {
+      id: uid(),
+      nombre: nombre,
+      fuero: document.getElementById('cf-fuero').value,
+      tel: document.getElementById('cf-tel').value.trim(),
+      notas: document.getElementById('cf-notas').value.trim(),
+      fecha: new Date().toISOString()
+    };
+    DB.clientes.push(nc);
+    showToast('✅ Cliente agregado: ' + nombre);
+  }
   saveDB();
   closeModal('clientModal');
   renderClients();
   renderDashboard();
-  showToast('✅ Cliente agregado: ' + nombre);
 }
 
 // ── RENDER: EXPEDIENTES ──
@@ -1125,38 +1290,68 @@ function renderExpedientes() {
     html += '<div class="em"><strong>Juzgado</strong>' + (e.juzgado || '—') + '</div>';
     html += '<div class="em"><strong>Fecha</strong>' + fechaLbl + '</div>';
     html += '<div class="em"><strong>Fuero</strong>' + (e.fuero.charAt(0).toUpperCase() + e.fuero.slice(1)) + '</div>';
-    html += '</div></div>';
+    html += '</div>';
+    if (currentUser === 'karina') {
+      html += '<div class="item-actions"><div class="act-btn" onclick="openExpModal(\'' + e.id + '\')">✏️ Editar</div><div class="act-btn danger" onclick="askDelete(\'expedientes\',\'' + e.id + '\',\'' + e.caratula.replace(/'/g,"\\'") + '\')">🗑️ Borrar</div></div>';
+    }
+    html += '</div>';
   }
   list.innerHTML = html;
 }
 
-function openExpModal() {
-  document.getElementById('ef-caratula').value = '';
-  document.getElementById('ef-numero').value = '';
-  document.getElementById('ef-juzgado').value = '';
-  document.getElementById('ef-fecha').value = '';
+var editingExpId = null;
+
+function openExpModal(editId) {
+  editingExpId = editId || null;
+  if (editId) {
+    var e = DB.expedientes.find(function(x){return x.id===editId;});
+    document.getElementById('ef-caratula').value = e.caratula;
+    document.getElementById('ef-numero').value = e.numero || '';
+    document.getElementById('ef-juzgado').value = e.juzgado || '';
+    document.getElementById('ef-fuero').value = e.fuero;
+    document.getElementById('ef-estado').value = e.estado;
+    document.getElementById('ef-fecha').value = e.fecha || '';
+    document.getElementById('expModalTitle').textContent = 'Editar expediente';
+  } else {
+    document.getElementById('ef-caratula').value = '';
+    document.getElementById('ef-numero').value = '';
+    document.getElementById('ef-juzgado').value = '';
+    document.getElementById('ef-fecha').value = '';
+    document.getElementById('expModalTitle').textContent = 'Nuevo expediente';
+  }
   document.getElementById('expModal').classList.add('show');
 }
 
 function submitExp() {
   var caratula = document.getElementById('ef-caratula').value.trim();
   if (!caratula) { showToast('⚠️ Escribí la carátula del expediente'); return; }
-  var e = {
-    id: uid(),
-    caratula: caratula,
-    numero: document.getElementById('ef-numero').value.trim(),
-    juzgado: document.getElementById('ef-juzgado').value.trim(),
-    fuero: document.getElementById('ef-fuero').value,
-    estado: document.getElementById('ef-estado').value,
-    fecha: document.getElementById('ef-fecha').value
-  };
-  DB.expedientes.push(e);
+  if (editingExpId) {
+    var e = DB.expedientes.find(function(x){return x.id===editingExpId;});
+    e.caratula = caratula;
+    e.numero = document.getElementById('ef-numero').value.trim();
+    e.juzgado = document.getElementById('ef-juzgado').value.trim();
+    e.fuero = document.getElementById('ef-fuero').value;
+    e.estado = document.getElementById('ef-estado').value;
+    e.fecha = document.getElementById('ef-fecha').value;
+    showToast('✅ Expediente actualizado');
+  } else {
+    var ne = {
+      id: uid(),
+      caratula: caratula,
+      numero: document.getElementById('ef-numero').value.trim(),
+      juzgado: document.getElementById('ef-juzgado').value.trim(),
+      fuero: document.getElementById('ef-fuero').value,
+      estado: document.getElementById('ef-estado').value,
+      fecha: document.getElementById('ef-fecha').value
+    };
+    DB.expedientes.push(ne);
+    showToast('✅ Expediente agregado');
+  }
   saveDB();
   closeModal('expModal');
   renderExpedientes();
   renderDashboard();
   renderInformes();
-  showToast('✅ Expediente agregado');
 }
 
 // ── RENDER: HONORARIOS ──
@@ -1198,16 +1393,31 @@ function renderHonorarios() {
     html += '<div class="hon-info"><div class="hon-client">' + h2.cliente + '</div><div class="hon-concept">' + (h2.concepto||'Sin concepto') + '</div></div>';
     html += '<div class="hon-right"><div class="hon-amount">' + fmtMoney(h2.monto) + '</div><div class="hon-venc ' + vencClass[h2.estado] + '">' + (h2.estado==='cobrado'?vencLabel[h2.estado]:'Vence ' + fechaLbl) + '</div></div></div>';
     html += '<div class="hon-btns"><button class="hon-wa" onclick="waHon(\'' + h2.cliente.replace(/'/g,"\\'") + '\',\'' + fmtMoney(h2.monto) + '\',\'' + (h2.concepto||'').replace(/'/g,"\\'") + '\',\'' + fechaLbl + '\',\'' + h2.estado + '\')">📱 WhatsApp</button></div>';
+    html += '<div class="item-actions"><div class="act-btn" onclick="openHonModal(\'' + h2.id + '\')">✏️ Editar</div><div class="act-btn danger" onclick="askDelete(\'honorarios\',\'' + h2.id + '\',\'' + h2.cliente.replace(/'/g,"\\'") + '\')">🗑️ Borrar</div></div>';
     html += '</div>';
   }
   list.innerHTML = html;
 }
 
-function openHonModal() {
-  document.getElementById('hf-cliente').value = '';
-  document.getElementById('hf-concepto').value = '';
-  document.getElementById('hf-monto').value = '';
-  document.getElementById('hf-vencimiento').value = '';
+var editingHonId = null;
+
+function openHonModal(editId) {
+  editingHonId = editId || null;
+  if (editId) {
+    var h = DB.honorarios.find(function(x){return x.id===editId;});
+    document.getElementById('hf-cliente').value = h.cliente;
+    document.getElementById('hf-concepto').value = h.concepto || '';
+    document.getElementById('hf-monto').value = h.monto;
+    document.getElementById('hf-estado').value = h.estado;
+    document.getElementById('hf-vencimiento').value = h.vencimiento || '';
+    document.getElementById('honModalTitle').textContent = 'Editar honorario';
+  } else {
+    document.getElementById('hf-cliente').value = '';
+    document.getElementById('hf-concepto').value = '';
+    document.getElementById('hf-monto').value = '';
+    document.getElementById('hf-vencimiento').value = '';
+    document.getElementById('honModalTitle').textContent = 'Nuevo honorario';
+  }
   document.getElementById('honModal').classList.add('show');
 }
 
@@ -1216,21 +1426,31 @@ function submitHon() {
   var monto = document.getElementById('hf-monto').value;
   if (!cliente) { showToast('⚠️ Escribí el nombre del cliente'); return; }
   if (!monto) { showToast('⚠️ Ingresá el monto'); return; }
-  var h = {
-    id: uid(),
-    cliente: cliente,
-    concepto: document.getElementById('hf-concepto').value.trim(),
-    monto: Number(monto),
-    estado: document.getElementById('hf-estado').value,
-    vencimiento: document.getElementById('hf-vencimiento').value
-  };
-  DB.honorarios.push(h);
+  if (editingHonId) {
+    var h = DB.honorarios.find(function(x){return x.id===editingHonId;});
+    h.cliente = cliente;
+    h.concepto = document.getElementById('hf-concepto').value.trim();
+    h.monto = Number(monto);
+    h.estado = document.getElementById('hf-estado').value;
+    h.vencimiento = document.getElementById('hf-vencimiento').value;
+    showToast('✅ Honorario actualizado');
+  } else {
+    var nh = {
+      id: uid(),
+      cliente: cliente,
+      concepto: document.getElementById('hf-concepto').value.trim(),
+      monto: Number(monto),
+      estado: document.getElementById('hf-estado').value,
+      vencimiento: document.getElementById('hf-vencimiento').value
+    };
+    DB.honorarios.push(nh);
+    showToast('✅ Honorario agregado');
+  }
   saveDB();
   closeModal('honModal');
   renderHonorarios();
   renderDashboard();
   renderInformes();
-  showToast('✅ Honorario agregado');
 }
 
 // ── RENDER: TAREAS ──
@@ -1269,6 +1489,9 @@ function renderTareas() {
     html += '<div style="display:flex;align-items:center;gap:5px"><span class="tdate">' + dateLbl + '</span>';
     html += '<div class="tstatus ' + statusClass[t.estado] + '" onclick="cycleStatus(this,\'' + t.id + '\')">' + statusLabel[t.estado] + '</div></div></div>';
     if (t.files && t.files.length) html += '<div class="file-zone">' + t.files + '</div>';
+    if (currentUser === 'karina') {
+      html += '<div class="item-actions"><div class="act-btn" onclick="openTaskEditModal(\'' + t.id + '\')">✏️ Editar</div><div class="act-btn danger" onclick="askDelete(\'tareas\',\'' + t.id + '\',\'' + t.titulo.replace(/'/g,"\\'") + '\')">🗑️ Borrar</div></div>';
+    }
     html += '</div>';
   }
   list.innerHTML = html;
@@ -1299,37 +1522,63 @@ function renderNovedades() {
     html += '<div class="nov-foot"><span class="nov-time">⏱ ' + fechaLbl + (n.vista?' · Vista':'') + '</span><div class="nov-btns">';
     if (!n.vista) html += '<div class="nov-btn" onclick="marcarVistaDB(\'' + n.id + '\',this)">✓ Vista</div>';
     html += '<button class="nov-wa" onclick="waJud(\'' + n.exp.replace(/'/g,"\\'") + '\',\'' + (n.tipo||'').replace(/'/g,"\\'") + '\',\'' + (n.juzgado||'').replace(/'/g,"\\'") + '\',\'' + fechaLbl + '\')">📱 WA</button>';
-    html += '</div></div></div>';
+    html += '</div></div>';
+    html += '<div class="item-actions"><div class="act-btn" onclick="openNovModal(\'' + n.id + '\')">✏️ Editar</div><div class="act-btn danger" onclick="askDelete(\'novedades\',\'' + n.id + '\',\'' + n.exp.replace(/'/g,"\\'") + '\')">🗑️ Borrar</div></div>';
+    html += '</div>';
   }
   list.innerHTML = html;
 }
 
-function openNovModal() {
-  document.getElementById('nf-exp').value = '';
-  document.getElementById('nf-tipo').value = '';
-  document.getElementById('nf-juzgado').value = '';
-  document.getElementById('nf-texto').value = '';
+var editingNovId = null;
+
+function openNovModal(editId) {
+  editingNovId = editId || null;
+  if (editId) {
+    var n = DB.novedades.find(function(x){return x.id===editId;});
+    document.getElementById('nf-exp').value = n.exp;
+    document.getElementById('nf-tipo').value = n.tipo || '';
+    document.getElementById('nf-juzgado').value = n.juzgado || '';
+    document.getElementById('nf-portal').value = n.portal;
+    document.getElementById('nf-texto').value = n.texto || '';
+    document.getElementById('novModalTitle').textContent = 'Editar novedad';
+  } else {
+    document.getElementById('nf-exp').value = '';
+    document.getElementById('nf-tipo').value = '';
+    document.getElementById('nf-juzgado').value = '';
+    document.getElementById('nf-texto').value = '';
+    document.getElementById('novModalTitle').textContent = 'Nueva novedad judicial';
+  }
   document.getElementById('novModal').classList.add('show');
 }
 
 function submitNov() {
   var exp = document.getElementById('nf-exp').value.trim();
   if (!exp) { showToast('⚠️ Escribí el expediente'); return; }
-  var n = {
-    id: uid(),
-    exp: exp,
-    tipo: document.getElementById('nf-tipo').value.trim(),
-    juzgado: document.getElementById('nf-juzgado').value.trim(),
-    portal: document.getElementById('nf-portal').value,
-    texto: document.getElementById('nf-texto').value.trim(),
-    fecha: new Date().toISOString(),
-    vista: false
-  };
-  DB.novedades.push(n);
+  if (editingNovId) {
+    var n = DB.novedades.find(function(x){return x.id===editingNovId;});
+    n.exp = exp;
+    n.tipo = document.getElementById('nf-tipo').value.trim();
+    n.juzgado = document.getElementById('nf-juzgado').value.trim();
+    n.portal = document.getElementById('nf-portal').value;
+    n.texto = document.getElementById('nf-texto').value.trim();
+    showToast('✅ Novedad actualizada');
+  } else {
+    var nn = {
+      id: uid(),
+      exp: exp,
+      tipo: document.getElementById('nf-tipo').value.trim(),
+      juzgado: document.getElementById('nf-juzgado').value.trim(),
+      portal: document.getElementById('nf-portal').value,
+      texto: document.getElementById('nf-texto').value.trim(),
+      fecha: new Date().toISOString(),
+      vista: false
+    };
+    DB.novedades.push(nn);
+    showToast('✅ Novedad agregada');
+  }
   saveDB();
   closeModal('novModal');
   renderNovedades();
-  showToast('✅ Novedad agregada');
 }
 
 function marcarVistaDB(id, el) {
@@ -1338,6 +1587,156 @@ function marcarVistaDB(id, el) {
   }
   saveDB();
   renderNovedades();
+}
+
+// ── CALENDARIO ──
+var calViewYear, calViewMonth; // 0-indexed month
+var pendingEventDate = null;
+
+function initCalView() {
+  var now = new Date();
+  calViewYear = now.getFullYear();
+  calViewMonth = now.getMonth();
+}
+initCalView();
+
+var MESES_LARGOS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var MESES_CORTOS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+function pad2(n){ return n<10 ? '0'+n : ''+n; }
+
+function calNav(dir) {
+  calViewMonth += dir;
+  if (calViewMonth > 11) { calViewMonth = 0; calViewYear++; }
+  if (calViewMonth < 0) { calViewMonth = 11; calViewYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  var lbl = document.getElementById('calMonthLbl');
+  if (!lbl) return;
+  lbl.textContent = MESES_LARGOS[calViewMonth] + ' ' + calViewYear;
+
+  var grid = document.getElementById('calGrid');
+  var html = '<div class="cdlbl">Do</div><div class="cdlbl">Lu</div><div class="cdlbl">Ma</div><div class="cdlbl">Mi</div><div class="cdlbl">Ju</div><div class="cdlbl">Vi</div><div class="cdlbl">Sa</div>';
+
+  var firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
+  var daysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
+  var daysInPrevMonth = new Date(calViewYear, calViewMonth, 0).getDate();
+
+  var today = new Date();
+  var isCurrentMonth = (today.getFullYear() === calViewYear && today.getMonth() === calViewMonth);
+
+  // Días con eventos este mes
+  var eventDays = {};
+  for (var i = 0; i < DB.eventos.length; i++) {
+    var ev = DB.eventos[i];
+    var d = new Date(ev.fecha + 'T12:00:00');
+    if (d.getFullYear() === calViewYear && d.getMonth() === calViewMonth) {
+      eventDays[d.getDate()] = true;
+    }
+  }
+
+  // Días del mes anterior
+  for (var p = firstDay - 1; p >= 0; p--) {
+    html += '<div class="cd other">' + (daysInPrevMonth - p) + '</div>';
+  }
+  // Días del mes actual
+  for (var day = 1; day <= daysInMonth; day++) {
+    var cls = 'cd';
+    if (isCurrentMonth && day === today.getDate()) cls += ' today';
+    if (eventDays[day]) cls += ' hev';
+    var dateStr = calViewYear + '-' + pad2(calViewMonth+1) + '-' + pad2(day);
+    html += '<div class="' + cls + '" onclick="openEventModal(\'' + dateStr + '\')">' + day + '</div>';
+  }
+  // Días del próximo mes (completar la grilla)
+  var totalCells = firstDay + daysInMonth;
+  var remaining = (7 - (totalCells % 7)) % 7;
+  for (var n = 1; n <= remaining; n++) {
+    html += '<div class="cd other">' + n + '</div>';
+  }
+
+  grid.innerHTML = html;
+  renderCalEvents();
+}
+
+function renderCalEvents() {
+  var list = document.getElementById('calEventsList');
+  var empty = document.getElementById('calEventsEmpty');
+  if (!list) return;
+  var monthEvents = DB.eventos.filter(function(e) {
+    var d = new Date(e.fecha + 'T12:00:00');
+    return d.getFullYear() === calViewYear && d.getMonth() === calViewMonth;
+  }).sort(function(a,b){ return a.fecha.localeCompare(b.fecha); });
+
+  if (!monthEvents.length) { list.innerHTML=''; empty.classList.add('show'); return; }
+  empty.classList.remove('show');
+  var fueroBadge = {civil:'badge-blue', laboral:'badge-green', familia:'badge-purple'};
+  var fueroLabel = {civil:'Civil', laboral:'Laboral', familia:'Familia'};
+  var html = '';
+  for (var i = 0; i < monthEvents.length; i++) {
+    var e = monthEvents[i];
+    var d = new Date(e.fecha + 'T12:00:00');
+    html += '<div class="card" style="padding:10px 12px">';
+    html += '<div style="display:flex;align-items:center;gap:10px">';
+    html += '<div class="edate"><div class="eday">' + d.getDate() + '</div><div class="emon">' + MESES_CORTOS[d.getMonth()] + '</div></div>';
+    html += '<div class="ev-info" style="flex:1"><div class="ev-title">' + e.titulo + '</div><div class="ev-meta">' + (e.detalle||'') + (e.hora?' · '+e.hora+' hs':'') + '</div></div>';
+    html += '<div class="badge ' + fueroBadge[e.fuero] + '">' + fueroLabel[e.fuero] + '</div></div>';
+    if (currentUser === 'karina') {
+      html += '<div class="item-actions"><div class="act-btn" onclick="openEventModal(\'' + e.fecha + '\',\'' + e.id + '\')">✏️ Editar</div><div class="act-btn danger" onclick="askDelete(\'eventos\',\'' + e.id + '\',\'' + e.titulo.replace(/'/g,"\\'") + '\')">🗑️ Borrar</div></div>';
+    }
+    html += '</div>';
+  }
+  list.innerHTML = html;
+}
+
+var editingEventId = null;
+
+function openEventModal(dateStr, editId) {
+  pendingEventDate = dateStr;
+  editingEventId = editId || null;
+  var d = new Date(dateStr + 'T12:00:00');
+  document.getElementById('evModalDate').textContent = d.getDate() + ' de ' + MESES_LARGOS[d.getMonth()];
+  if (editId) {
+    var ev = DB.eventos.find(function(x){return x.id===editId;});
+    document.getElementById('evf-titulo').value = ev.titulo;
+    document.getElementById('evf-detalle').value = ev.detalle || '';
+    document.getElementById('evf-hora').value = ev.hora || '';
+    document.getElementById('evf-fuero').value = ev.fuero;
+  } else {
+    document.getElementById('evf-titulo').value = '';
+    document.getElementById('evf-detalle').value = '';
+    document.getElementById('evf-hora').value = '';
+  }
+  document.getElementById('eventModal').classList.add('show');
+}
+
+function submitEvent() {
+  var titulo = document.getElementById('evf-titulo').value.trim();
+  if (!titulo) { showToast('⚠️ Escribí el título del evento'); return; }
+  if (editingEventId) {
+    var ev = DB.eventos.find(function(x){return x.id===editingEventId;});
+    ev.titulo = titulo;
+    ev.detalle = document.getElementById('evf-detalle').value.trim();
+    ev.hora = document.getElementById('evf-hora').value;
+    ev.fuero = document.getElementById('evf-fuero').value;
+    showToast('✅ Evento actualizado');
+  } else {
+    var nev = {
+      id: uid(),
+      fecha: pendingEventDate,
+      titulo: titulo,
+      detalle: document.getElementById('evf-detalle').value.trim(),
+      hora: document.getElementById('evf-hora').value,
+      fuero: document.getElementById('evf-fuero').value
+    };
+    DB.eventos.push(nev);
+    showToast('✅ Evento agregado al calendario');
+  }
+  saveDB();
+  closeModal('eventModal');
+  renderCalendar();
+  renderDashboard();
 }
 
 // ── RENDER: DASHBOARD ──
@@ -1377,20 +1776,28 @@ function renderDashboard() {
     }
   }
 
-  // Events: expedientes con fecha próxima
+  // Events: expedientes con fecha próxima + eventos del calendario
   var evEl = document.getElementById('dashEvents');
   var evEmpty = document.getElementById('dashEventsEmpty');
   if (evEl) {
-    var withDate = DB.expedientes.filter(function(e){return e.fecha;}).sort(function(a,b){return a.fecha.localeCompare(b.fecha);});
-    if (!withDate.length) { evEl.innerHTML=''; evEmpty.classList.add('show'); }
+    var fueroBadge = {civil:'badge-blue', laboral:'badge-green', familia:'badge-purple'};
+    var combined = [];
+    var todayStr = new Date().toISOString().split('T')[0];
+    DB.expedientes.filter(function(e){return e.fecha && e.fecha >= todayStr;}).forEach(function(e){
+      combined.push({fecha:e.fecha, titulo:e.caratula, meta:e.juzgado||'', fuero:e.fuero});
+    });
+    DB.eventos.filter(function(e){return e.fecha >= todayStr;}).forEach(function(e){
+      combined.push({fecha:e.fecha, titulo:e.titulo, meta:(e.detalle||'')+(e.hora?' · '+e.hora+' hs':''), fuero:e.fuero});
+    });
+    combined.sort(function(a,b){return a.fecha.localeCompare(b.fecha);});
+    if (!combined.length) { evEl.innerHTML=''; evEmpty.classList.add('show'); }
     else {
       evEmpty.classList.remove('show');
       var eh = '';
-      var meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-      for (var k = 0; k < Math.min(withDate.length,5); k++) {
-        var ex = withDate[k];
+      for (var k = 0; k < Math.min(combined.length,5); k++) {
+        var ex = combined[k];
         var d = new Date(ex.fecha + 'T12:00:00');
-        eh += '<div class="ev-row"><div class="edate"><div class="eday">' + d.getDate() + '</div><div class="emon">' + meses[d.getMonth()] + '</div></div><div class="ev-info"><div class="ev-title">' + ex.caratula + '</div><div class="ev-meta">' + (ex.juzgado||'') + '</div></div><div class="badge badge-blue">' + ex.fuero + '</div></div>';
+        eh += '<div class="ev-row"><div class="edate"><div class="eday">' + d.getDate() + '</div><div class="emon">' + MESES_CORTOS[d.getMonth()] + '</div></div><div class="ev-info"><div class="ev-title">' + ex.titulo + '</div><div class="ev-meta">' + ex.meta + '</div></div><div class="badge ' + (fueroBadge[ex.fuero]||'badge-gold') + '">' + ex.fuero + '</div></div>';
       }
       evEl.innerHTML = eh;
     }
@@ -1504,6 +1911,7 @@ function renderAll() {
   renderHonorarios();
   renderTareas();
   renderNovedades();
+  renderCalendar();
   renderDashboard();
   renderAlertasScreen();
   renderInformes();
@@ -1512,6 +1920,39 @@ function renderAll() {
 
 function closeModal(id) {
   document.getElementById(id).classList.remove('show');
+}
+
+// ── BORRADO GENÉRICO ──
+var pendingDelete = null; // {coleccion, id}
+
+function askDelete(coleccion, id, nombre) {
+  pendingDelete = {coleccion: coleccion, id: id};
+  document.getElementById('confirmText').textContent = '"' + nombre + '" se eliminará permanentemente. Esta acción no se puede deshacer.';
+  document.getElementById('confirmModal').classList.add('show');
+}
+
+function closeConfirm() {
+  pendingDelete = null;
+  document.getElementById('confirmModal').classList.remove('show');
+}
+
+function confirmDelete() {
+  if (!pendingDelete) return;
+  var col = pendingDelete.coleccion;
+  var id = pendingDelete.id;
+  DB[col] = DB[col].filter(function(item) { return item.id !== id; });
+  saveDB();
+  document.getElementById('confirmModal').classList.remove('show');
+  pendingDelete = null;
+
+  if (col === 'clientes') renderClients();
+  else if (col === 'expedientes') { renderExpedientes(); renderInformes(); }
+  else if (col === 'honorarios') { renderHonorarios(); renderInformes(); }
+  else if (col === 'tareas') { renderTareas(); renderInformes(); renderEquipo(); }
+  else if (col === 'novedades') renderNovedades();
+  else if (col === 'eventos') renderCalendar();
+  renderDashboard();
+  showToast('🗑️ Eliminado correctamente');
 }
 
 function startApp(uid) {
@@ -1757,26 +2198,62 @@ function filterAlertas(tipo, btn) {
   if (btn) btn.classList.add('on');
 }
 
+var editingTaskId = null;
+
 function openTaskModal() {
-  selAssignee = null; selPrio = null;
+  editingTaskId = null;
+  selAssignees = []; selPrio = null;
   document.getElementById('tf-titulo').value = '';
   document.getElementById('tf-desc').value = '';
   document.getElementById('tf-fecha').value = '';
   document.getElementById('tf-files').innerHTML = '';
+  document.getElementById('taskModalTitle').textContent = 'Nueva tarea';
+  document.getElementById('arowLabel').textContent = 'Asignar a (podés elegir varias) *';
   var aopts = document.querySelectorAll('.aopt');
-  for (var i = 0; i < aopts.length; i++) aopts[i].classList.remove('on');
+  for (var i = 0; i < aopts.length; i++) { aopts[i].classList.remove('on'); aopts[i].style.display = 'flex'; }
   var popts = document.querySelectorAll('.popt');
   for (var j = 0; j < popts.length; j++) popts[j].className = 'popt';
+  document.getElementById('taskModal').classList.add('show');
+}
+
+function openTaskEditModal(taskId) {
+  editingTaskId = taskId;
+  var t = DB.tareas.find(function(x){return x.id===taskId;});
+  selAssignees = [t.asignado];
+  selPrio = t.prioridad;
+  document.getElementById('tf-titulo').value = t.titulo;
+  document.getElementById('tf-desc').value = t.desc || '';
+  document.getElementById('tf-fecha').value = t.fecha || '';
+  document.getElementById('tf-files').innerHTML = t.files || '';
+  document.getElementById('taskModalTitle').textContent = 'Editar tarea';
+  document.getElementById('arowLabel').textContent = 'Asignado a';
+  var aopts = document.querySelectorAll('.aopt');
+  for (var i = 0; i < aopts.length; i++) {
+    aopts[i].classList.remove('on');
+    aopts[i].style.display = (aopts[i].dataset.uid === t.asignado) ? 'flex' : 'none';
+    if (aopts[i].dataset.uid === t.asignado) aopts[i].classList.add('on');
+  }
+  var popts = document.querySelectorAll('.popt');
+  for (var j = 0; j < popts.length; j++) {
+    popts[j].className = 'popt';
+    if (popts[j].dataset.p === t.prioridad) popts[j].classList.add('on-' + (t.prioridad==='alta'?'a':t.prioridad==='media'?'m':'n'));
+  }
   document.getElementById('taskModal').classList.add('show');
 }
 
 function closeTaskModal() { document.getElementById('taskModal').classList.remove('show'); }
 
 function selA(el) {
-  var aopts = document.querySelectorAll('.aopt');
-  for (var i = 0; i < aopts.length; i++) aopts[i].classList.remove('on');
-  el.classList.add('on');
-  selAssignee = el.dataset.uid;
+  if (editingTaskId) return; // en modo edición no se cambia asignado
+  var uid_ = el.dataset.uid;
+  var idx = selAssignees.indexOf(uid_);
+  if (idx > -1) {
+    selAssignees.splice(idx, 1);
+    el.classList.remove('on');
+  } else {
+    selAssignees.push(uid_);
+    el.classList.add('on');
+  }
 }
 
 function selP(el) {
@@ -1805,32 +2282,54 @@ function setTaskFiles(input) {
 function submitTask() {
   var title = document.getElementById('tf-titulo').value.trim();
   if (!title) { showToast('⚠️ Escribí el título'); return; }
-  if (!selAssignee) { showToast('⚠️ Seleccioná a quién asignar'); return; }
+  if (!selAssignees.length) { showToast('⚠️ Seleccioná al menos una colaboradora'); return; }
   if (!selPrio) { showToast('⚠️ Elegí una prioridad'); return; }
-  var u = USERS[selAssignee];
   var desc = document.getElementById('tf-desc').value.trim();
   var fecha = document.getElementById('tf-fecha').value;
   var filesHtml = document.getElementById('tf-files').innerHTML;
 
-  var t = {
-    id: uid(),
-    titulo: title,
-    desc: desc,
-    asignado: selAssignee,
-    prioridad: selPrio,
-    fecha: fecha,
-    estado: 'sinver',
-    completada: false,
-    files: filesHtml
-  };
-  DB.tareas.push(t);
+  if (editingTaskId) {
+    var t = DB.tareas.find(function(x){return x.id===editingTaskId;});
+    t.titulo = title;
+    t.desc = desc;
+    t.prioridad = selPrio;
+    t.fecha = fecha;
+    t.files = filesHtml;
+    saveDB();
+    closeTaskModal();
+    renderTareas();
+    renderDashboard();
+    renderInformes();
+    renderEquipo();
+    showToast('✅ Tarea actualizada');
+    return;
+  }
+
+  var names = [];
+  for (var i = 0; i < selAssignees.length; i++) {
+    var uidSel = selAssignees[i];
+    var u = USERS[uidSel];
+    names.push(u.name);
+    var nt = {
+      id: uid(),
+      titulo: title,
+      desc: desc,
+      asignado: uidSel,
+      prioridad: selPrio,
+      fecha: fecha,
+      estado: 'sinver',
+      completada: false,
+      files: filesHtml
+    };
+    DB.tareas.push(nt);
+  }
   saveDB();
   closeTaskModal();
   renderTareas();
   renderDashboard();
   renderInformes();
   renderEquipo();
-  showToast('📨 Tarea enviada a ' + u.name);
+  showToast('📨 Tarea enviada a ' + names.join(' y '));
 }
 
 function buildContacts() {
